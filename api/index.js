@@ -24,6 +24,8 @@ app.listen(port, ()=>{
     console.log("Le serveur est lancé sur le port 3000")
 })
 
+//CONNEXION ET INSCRIPTION
+
 const User = require("./models/user")
 const Post = require("./models/post")
 
@@ -122,5 +124,23 @@ app.post("/login", async(req, res) =>{
     catch(err){
         console.log("Erreur lors de la connexion")
       return res.status(500).json({message:"La connexion a echoué"})
+    }
+})
+
+//RECUPERER TOUS LES UTILISATEURS SAUF CELUI CONNECTE
+
+app.get("/user/:userId", (req, res)=>{
+    try{
+        const loggedInUserId = req.params.userId
+        User.find({_id:{$ne:loggedInUserId}}).then((users)=>{
+            res.status(200).json(users)
+        }).catch((err)=>{
+            console.log("Erreur ", err)
+            res.status(500).json("erreur lors de la récupération des utilisateurs")
+        })
+    }
+    catch(err){
+        console.log("erreur lors de la récupération des utilisateurs")
+        res.status(500).json({message:"erreur lors de la récupération des utilisateurs"})
     }
 })
