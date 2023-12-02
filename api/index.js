@@ -110,17 +110,17 @@ app.post("/login", async(req, res) =>{
         const {email, password} = req.body
         const user = await User.findOne({email:email})
         if(!user){
-            res.status(400).json({message:"Adresse email ou mot de passe invalide"})
+            return res.status(400).json({message:"Adresse email ou mot de passe invalide"})
         }
         if(user.password !== password){
-            res.status(400).json({message:"Adresse email ou mot de passe invalide"})
+          return  res.status(400).json({message:"Adresse email ou mot de passe invalide"})
         }
         const token = jwt.sign({userId:user._id}, secretKey)
 
-        res.status(200).json({token})
+       return res.status(200).json({token})
     }
     catch(err){
         console.log("Erreur lors de la connexion")
-        res.status(500).json({message:"La connexion a echoué"})
+      return res.status(500).json({message:"La connexion a echoué"})
     }
 })

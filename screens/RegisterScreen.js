@@ -29,19 +29,8 @@ const RegisterScreen = () => {
              setPassword("")
              navigation.navigate("Login")
         }).catch((err)=>{
-            if (err.response) {
-    // La requête a été faite et le serveur a répondu avec un code d'état
-    // qui tombe en dehors de la plage de 2xx
-    console.log(err.response.data);
-    console.log(err.response.status);
-    console.log(err.response.headers);
-  } else if (err.request) {
-    // La requête a été faite mais aucune réponse n'a été reçue
-    console.log(err.request);
-  } else {
-    // Quelque chose s'est mal passé lors de la mise en place de la requête
-    console.log('Error', err.message);
-  }
+           console.log("erreur lors de l'inscription", err)
+           Alert.alert("Erreur lors de l'inscription", err.toString())
         })
   }
 
@@ -54,7 +43,7 @@ const RegisterScreen = () => {
       </View>
       <KeyboardAvoidingView>
         <View style={{ alignItems:"center", justifyContent:"center", }}>
-            <Text style={{ fontSize:17, fontWeight:"bold", marginTop:25 }}>Connectez-vous</Text>
+            <Text style={{ fontSize:17, fontWeight:"bold", marginTop:25 }}>Inscrivez-vous</Text>
         </View>
         <View style={{ marginTop:40 }}>
             <View style={{ flexDirection:"row", alignItems:"center", gap:5, borderColor:"#D0D0D0", borderWidth:1, paddingVertical:5, borderRadius:5}}>

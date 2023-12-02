@@ -1,23 +1,51 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, Alert, Image, KeyboardAvoidingView, TextInput, Pressable } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("") 
-  const navigation = useNavigation()   
+  const navigation = useNavigation()
 
-  const handleLogin = () => {
+  useEffect(() => {
+    const checkLoginStatus = async() =>{
+      try{
+        const token = await AsyncStorage.getItem("authToken")
+        if(token){
+          setTimeout(()=>{
+            navigation.replace("Main")
+          }, 400)
+        }
+      }
+      catch(error){
+        console.log("erreur", error)
+      }
+    }
+
+    checkLoginStatus()
+
+  }, [])
+
+  const handleLogin = (e) => {
+    e.preventDefault()
     const user = {
       email: email,
       password: password
     }
+    console.log(email, password)
     axios.post('http://10.0.2.2:3000/login', user)
     .then((response)=> {
       console.log(response)
+      const token = response.data.token
+      AsyncStorage.setItem("authToken", token)
+      navigation.navigate("Home")
+    }).catch((err) => {
+      console.log("erreur lors de la connexion", err)
+      Alert.alert("Erreur lors de la connexion", err.toString())
     })
   }
   return (
@@ -34,13 +62,13 @@ const LoginScreen = () => {
         <View style={{ marginTop:40 }}>
             <View style={{ flexDirection:"row", alignItems:"center", gap:5, borderColor:"#D0D0D0", borderWidth:1, paddingVertical:5, borderRadius:5}}>
             <MaterialIcons name="email" size={24} color="black" style={{ paddingLeft:5 }} />
-            <TextInput value={email} onTextChange={setEmail} style={{ paddingHorizontal:10, width:300, fontSize:email?16:16}} placeholder="entrez votre Email"/>
+            <TextInput value={email} onChangeText={setEmail} style={{ paddingHorizontal:10, width:300, fontSize:email?16:16}} placeholder="entrez votre Email"/>
             </View>
         </View>
         <View style={{ marginTop:20 }}>
             <View style={{ flexDirection:"row", alignItems:"center", gap:5, borderColor:"#D0D0D0", borderWidth:1, paddingVertical:5, borderRadius:5}}>
            <MaterialCommunityIcons name="form-textbox-password" style={{ paddingLeft:5 }} size={24} color="black" />
-            <TextInput value={password} onTextChange={setPassword} style={{ paddingHorizontal:10, width:300, fontSize:password?16:16 }} placeholder="entrez votre Mot de passe"/>
+            <TextInput value={password} onChangeText={setPassword} style={{ paddingHorizontal:10, width:300, fontSize:password?16:16 }} placeholder="entrez votre Mot de passe"/>
             </View>
         </View>
         <View style={{ flexDirection:"row",paddingHorizontal:20, alignItems:"center", justifyContent:"space-between",marginTop:20 }}>
@@ -48,7 +76,7 @@ const LoginScreen = () => {
             <Text style={{ fontWeight:"500", color:"#007FFF"}}>Mot de passe oublié</Text>
         </View>
         <View style={{marginTop:-25}}/>
-        <Pressable style={{ width:200, backgroundColor:"black", padding:15, marginTop:40, marginLeft:"auto", marginRight:"auto", borderRadius:6  }}> 
+        <Pressable onPress={handleLogin}  style={{ width:200, backgroundColor:"black", padding:15, marginTop:40, marginLeft:"auto", marginRight:"auto", borderRadius:6  }}> 
             <Text style={{ color:"white",textAlign:"center", fontWeight:"bold", fontSize:16 }}>Connexion</Text>
         </Pressable>
         <Pressable onPress={()=>navigation.navigate("Register")} style={{ marginTop:10 }}> 
