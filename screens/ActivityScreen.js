@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ActivityScreen = () => {
   const [selectedButton, setSelectedButton] = useState("Personnes")
@@ -8,8 +9,16 @@ const ActivityScreen = () => {
     setSelectedButton(buttonName)
   }
   useEffect(() => {
-    const fetchUsers = async() => {
-      
+    const fetchUsers = async () => {
+      const token = await AsyncStorage.getItem("authToken")
+      const decodedToken = jwt_decode(token)
+      const userId = decodedToken.userId
+      setUserId(userId)
+
+      axios.get(`http://10.0.2.2:3000/${userId}`).
+        then((response) => {
+          setUsers(response.data)
+        })
     }
   }, [])
   return (
