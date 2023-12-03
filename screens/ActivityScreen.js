@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UserType } from '../UserContext'
+import { jwtDecode } from 'jwt-decode'
+import base64 from 'react-native-base64'
+import axios from 'axios'
 
 const ActivityScreen = () => {
   const [selectedButton, setSelectedButton] = useState("Personnes")
@@ -14,18 +17,24 @@ const ActivityScreen = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = await AsyncStorage.getItem("authToken")
-      const decodedToken = jwt_decode(token)
+      const base64Url = token.split('.')[1]
+      const base64String = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+      const decodedToken = JSON.parse(base64.decode(base64String))
       const userId = decodedToken.userId
       setUserId(userId)
 
-      axios.get(`http://10.0.2.2:3000/${userId}`).
+      axios.get(`http://10.0.2.2:3000/user/${userId}`).
         then((response) => {
           setUsers(response.data)
-          console.log(users)
         }).catch((err) => {
           Alert.alert(err, "Erreur lors de la récupération des utilisateurs").toString()
         })
     }
+
+    fetchUsers()
+    
+    console.log(users)
+
   }, [])
   return (
     <ScrollView style={{ marginTop: 50 }}>
