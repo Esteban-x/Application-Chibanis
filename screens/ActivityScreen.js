@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { UserType } from '../UserContext'
 
 const ActivityScreen = () => {
   const [selectedButton, setSelectedButton] = useState("Personnes")
   const [content, setContent] = useState("Personnes Content")
+  const [users, setUsers] = useState([])
+  const { userId, setUserId } = useContext(UserType)
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName)
   }
@@ -18,6 +21,9 @@ const ActivityScreen = () => {
       axios.get(`http://10.0.2.2:3000/${userId}`).
         then((response) => {
           setUsers(response.data)
+          console.log(users)
+        }).catch((err) => {
+          Alert.alert(err, "Erreur lors de la récupération des utilisateurs").toString()
         })
     }
   }, [])
