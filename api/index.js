@@ -246,7 +246,7 @@ app.get("/get-posts", async (req, res) => {
 })
 
 //AFFICHAGE DU PROFIL
-app.get("/profile/:userId", async (res, req) => {
+app.get("/profile/:userId", async (req, res) => {
     try {
         const userId = req.params.userId
         const user = await User.findById(userId)
@@ -258,7 +258,7 @@ app.get("/profile/:userId", async (res, req) => {
         return res.status(200).json({ user })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ message: "erreur:", err })
+        res.status(500).json({ message: "erreur:", err })
     }
 })
 

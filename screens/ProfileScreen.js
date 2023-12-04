@@ -2,8 +2,6 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { UserType } from '../UserContext'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import base64 from 'react-native-base64'
 
 const ProfileScreen = () => {
   const [user, setUser] = useState("")
@@ -20,8 +18,8 @@ const ProfileScreen = () => {
       }
     }
     fetchProfile()
-  }, [])
-  console.log("profile", user)
+  })
+  console.log("profile :", user)
   return (
     <View style={{ marginTop: 50, textAlign: "center" }}>
       <Text>profilescreen</Text>

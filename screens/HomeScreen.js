@@ -80,8 +80,8 @@ const HomeScreen = () => {
         }} />
       </View>
       <View style={{ marginTop: 20 }}>
-        {posts?.map((post) => (
-          <View style={{ padding: 15, borderColor: "#D0D0D0", borderTopWidth: 1, flexDirection: "row", gap: 10, marginVertical: 10 }}>
+        {posts?.map((post, index) => (
+          <View key={index} style={{ padding: 15, borderColor: "#D0D0D0", borderTopWidth: 1, flexDirection: "row", gap: 10, marginVertical: 10 }}>
             <View>
               <Image style={{
                 width: 40,
