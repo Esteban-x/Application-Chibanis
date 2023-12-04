@@ -245,3 +245,20 @@ app.get("/get-posts", async (req, res) => {
     }
 })
 
+//AFFICHAGE DU PROFIL
+app.get("/profile/:userId", async (res, req) => {
+    try {
+        const userId = req.params.userId
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                message: "utilisateur inexistant"
+            })
+        }
+        return res.status(200).json({ user })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "erreur:", err })
+    }
+})
+
