@@ -19,10 +19,12 @@ const ProfileScreen = () => {
     }
     fetchProfile()
   })
-  console.log("profile :", user)
   return (
-    <View style={{ marginTop: 50, textAlign: "center" }}>
-      <Text>profilescreen</Text>
+    <View style={{ marginTop: 300, textAlign: "center", marginLeft: 60 }}>
+      <Text>Nom d'utilisateur : {user?.name}</Text>
+      <Text>Email: {user?.email}</Text>
+      <Text>Inscrit depuis le : {user?.joinDate} </Text>
+
     </View>
   )
 }
