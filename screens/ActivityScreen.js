@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-nati
 import React, { useEffect, useState, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UserType } from '../UserContext'
-import { jwtDecode } from 'jwt-decode'
 import base64 from 'react-native-base64'
 import axios from 'axios'
+import User from '../components/User'
 
 const ActivityScreen = () => {
   const [selectedButton, setSelectedButton] = useState("Personnes")
@@ -32,10 +32,10 @@ const ActivityScreen = () => {
     }
 
     fetchUsers()
-    
-    console.log(users)
 
   }, [])
+  console.log(users)
+
   return (
     <ScrollView style={{ marginTop: 50 }}>
       <View style={{ padding: 10 }}>
@@ -58,6 +58,15 @@ const ActivityScreen = () => {
               Demandes
             </Text>
           </TouchableOpacity>
+        </View>
+        <View>
+          {selectedButton === "Personnes" && (
+            <View style={{ marginTop: 50 }}>
+              {users?.map((item, index) => (
+                <User key={index} item={item}></User>
+              ))}
+            </View>
+          )}
         </View>
       </View>
     </ScrollView>
