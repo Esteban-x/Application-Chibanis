@@ -31,8 +31,8 @@ const ProfileScreen = () => {
     fetchProfile()
   }, [])
   return (
-    <View>
-      <Text>ProfileScreen</Text>
+    <View style={{ marginTop: 50, textAlign: "center" }}>
+      <Text>Bonjour</Text>
     </View>
   )
 }
