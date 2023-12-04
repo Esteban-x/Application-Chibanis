@@ -75,7 +75,7 @@ const HomeScreen = () => {
   return (
     <ScrollView style={{ marginTop: 50, flex: 1, backgroundColor: "white" }}>
       <View style={{ alignItems: "center", marginTop: 20 }}>
-        <Image style={{ width: 60, height: 40, resizedMode: "contain" }} source={{
+        <Image style={{ width: 60, height: 40, resizeMode: "contain" }} source={{
           uri: "https://freelogopng.com/images/all_img/1688663386threads-logo-transparent.png"
         }} />
       </View>

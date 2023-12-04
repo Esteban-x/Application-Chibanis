@@ -10,14 +10,6 @@ const ProfileScreen = () => {
   const { userId, setUserId } = useContext(UserType)
 
   useEffect(() => {
-    const fetchLoggedInUser = async () => {
-      const token = await AsyncStorage.getItem("authToken")
-      const base64Url = token.split('.')[1]
-      const base64String = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-      const decodedToken = JSON.parse(base64.decode(base64String))
-      const userId = decodedToken.userId
-      setUserId(userId)
-    }
     const fetchProfile = async () => {
       try {
         const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
@@ -27,12 +19,12 @@ const ProfileScreen = () => {
         console.error(err)
       }
     }
-    fetchLoggedInUser()
     fetchProfile()
   }, [])
+  console.log("profile", user)
   return (
     <View style={{ marginTop: 50, textAlign: "center" }}>
-      <Text>Bonjour</Text>
+      <Text>profilescreen</Text>
     </View>
   )
 }

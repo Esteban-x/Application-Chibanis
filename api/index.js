@@ -255,10 +255,10 @@ app.get("/profile/:userId", async (res, req) => {
                 message: "utilisateur inexistant"
             })
         }
-        res.status(200).json({ user })
+        return res.status(200).json({ user })
     } catch (err) {
         console.log(err)
-        res.status(500).json({ message: "erreur:", err })
+        return res.status(500).json({ message: "erreur:", err })
     }
 })
 
