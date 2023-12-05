@@ -44,6 +44,7 @@ const StackNavigator = () => {
           tabBarLabel: isUserLoggedIn ? "Mon compte" : "Se connecter", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
             (<Ionicons name="person-circle-outline" size={24} color="black" />) : (<Ionicons name="person-circle-outline" size={24} color="gray" />)
         }} />
+        <Tab.Screen name="Register" component={RegisterScreen} options={{ tabBarButton: () => null }} />
       </Tab.Navigator>
     )
   }
@@ -51,8 +52,6 @@ const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Main'>
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>

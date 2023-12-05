@@ -68,7 +68,7 @@ const LoginScreen = () => {
         <Pressable onPress={handleLogin} style={{ width: 200, backgroundColor: "black", padding: 15, marginTop: 40, marginLeft: "auto", marginRight: "auto", borderRadius: 6 }}>
           <Text style={{ color: "white", textAlign: "center", fontWeight: "bold", fontSize: 16 }}>Connexion</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate("Register")} style={{ marginTop: 10 }}>
+        <Pressable onPress={() => navigation.navigate("Main", { screen: "Register" })} style={{ marginTop: 10 }}>
           <Text style={{ textAlign: "center", fontSize: 16 }}>Vous n'avez pas de compte ? S'inscrire</Text>
         </Pressable>
       </KeyboardAvoidingView>
