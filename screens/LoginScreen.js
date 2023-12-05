@@ -19,8 +19,7 @@ const LoginScreen = () => {
 
   })
 
-  const handleLogin = (e) => {
-    e.preventDefault()
+  const handleLogin = () => {
     const user = {
       email: email,
       password: password
@@ -31,7 +30,8 @@ const LoginScreen = () => {
         console.log(response)
         const token = response.data.token
         AsyncStorage.setItem("authToken", token)
-        navigation.navigate('Main', { screen: 'Home' })
+        checkLoginStatus()
+        navigation.replace('Main', { screen: 'Home' })
       }).catch((err) => {
         console.log("erreur lors de la connexion", err)
         Alert.alert("Erreur lors de la connexion", err.toString())
