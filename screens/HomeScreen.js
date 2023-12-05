@@ -10,11 +10,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { AuthContext } from '../AuthContext'
 
 const HomeScreen = () => {
   const { userId, setUserId } = useContext(UserType)
   const [posts, setPosts] = useState([])
+  const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   useEffect(() => {
+    checkLoginStatus()
     const fetchLoggedInUser = async () => {
       const token = await AsyncStorage.getItem("authToken")
       const base64Url = token.split('.')[1]
@@ -23,9 +26,9 @@ const HomeScreen = () => {
       const userId = decodedToken.userId
       setUserId(userId)
     }
-
-    fetchLoggedInUser()
-
+    if (isUserLoggedIn){
+      fetchLoggedInUser()
+    }
   }, [])
 
   useEffect(() => {

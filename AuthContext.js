@@ -10,11 +10,9 @@ export const AuthProvider = ({ children }) => {
         const token = await AsyncStorage.getItem("authToken")
         if (token) {
             setIsUserLoggedIn(true)
-            console.log("utilisateur connecté")
         }
-        else { 
-        setIsUserLoggedIn(false)
-        console.log("utilisateur déconnecté")
+        else {
+            setIsUserLoggedIn(false)
         }
     }
 

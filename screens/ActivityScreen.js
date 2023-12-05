@@ -1,20 +1,23 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { UserType } from '../UserContext'
+import { UserContext, UserType } from '../UserContext'
 import base64 from 'react-native-base64'
 import axios from 'axios'
 import User from '../components/User'
+import { AuthContext } from '../AuthContext'
 
 const ActivityScreen = () => {
   const [selectedButton, setSelectedButton] = useState("Personnes")
   const [content, setContent] = useState("Personnes Content")
   const [users, setUsers] = useState([])
   const { userId, setUserId } = useContext(UserType)
+  const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName)
   }
   useEffect(() => {
+    checkLoginStatus()
     const fetchUsers = async () => {
       const token = await AsyncStorage.getItem("authToken")
       const base64Url = token.split('.')[1]
@@ -30,8 +33,9 @@ const ActivityScreen = () => {
           Alert.alert(err, "Erreur lors de la récupération des utilisateurs").toString()
         })
     }
-
-    fetchUsers()
+    if (isUserLoggedIn) {
+      fetchUsers()
+    }
 
   }, [])
   console.log("autres utilisateurs :", users)
