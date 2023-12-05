@@ -1,42 +1,42 @@
 const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
-    name:{
+    name: {
         type: String,
-        unique:true,
-        required:true
+        unique: true,
+        required: true
     },
-    email:{
+    email: {
         type: String,
-        required:true,
-        unique:true
+        required: true,
+        unique: true
     },
-    password:{
-        type:String,
-        required:true
+    password: {
+        type: String,
+        required: true
     },
-    profilePicture:{
+    profilePicture: {
         type: String,
     },
-    joinDate:{
+    joinDate: {
         type: Date,
         default: Date.now
     },
-    role:{
-        type:String
+    role: {
+        type: String
     },
-    sentFollowRequests:{
-        type: mongoose.Schema.Types.ObjectId, ref:"User"
+    sentFollowRequests: {
+        type: mongoose.Schema.Types.ObjectId, ref: "User"
     },
-    receivedFollowRequests:{
-        type: mongoose.Schema.Types.ObjectId, ref:"User"
+    receivedFollowRequests: {
+        type: mongoose.Schema.Types.ObjectId, ref: "User"
 
     },
-    followers:{
-        type: mongoose.Schema.Types.ObjectId, ref:"User"
+    followers: {
+        type: mongoose.Schema.Types.ObjectId, ref: "User"
     },
-    verified:{
-        type:Boolean,
-        default:false
+    verified: {
+        type: Boolean,
+        default: false
     },
     verificationToken: String
 })
