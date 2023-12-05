@@ -35,6 +35,7 @@ const ActivityScreen = () => {
 
   }, [])
   console.log("autres utilisateurs :", users)
+  console.log("utilisateur connecté : ", userId)
 
   return (
     <ScrollView style={{ marginTop: 50 }}>

@@ -1,31 +1,20 @@
 import { StyleSheet, Text, View, SafeAreaView, Alert, Image, KeyboardAvoidingView, TextInput, Pressable } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../AuthContext';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigation = useNavigation()
+  const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const token = await AsyncStorage.getItem("authToken")
-        if (token) {
-          setTimeout(() => {
-            navigation.replace("Main")
-          }, 400)
-        }
-      }
-      catch (error) {
-        console.log("erreur", error)
-      }
-    }
-
+    
     checkLoginStatus()
 
   }, [])
@@ -42,7 +31,7 @@ const LoginScreen = () => {
         console.log(response)
         const token = response.data.token
         AsyncStorage.setItem("authToken", token)
-        navigation.navigate("Home")
+        navigation.navigate('Main', { screen: 'Home' })
       }).catch((err) => {
         console.log("erreur lors de la connexion", err)
         Alert.alert("Erreur lors de la connexion", err.toString())
