@@ -12,6 +12,7 @@ import ActivityScreen from './screens/ActivityScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from './AuthContext'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const StackNavigator = () => {
 
@@ -32,16 +33,24 @@ const StackNavigator = () => {
         }} />
         {isUserLoggedIn && (
           <Tab.Screen name="Threads" component={ThreadScreen} options={{
-            tabBarLabel: "Publier", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+            tabBarLabel: "Missions", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
               (<Ionicons name="md-create-outline" size={24} color="black" />) : (<Ionicons name="md-create-outline" size={24} color="gray" />)
           }} />
         )}
         <Tab.Screen name="Activity" component={ActivityScreen} options={{
           tabBarLabel: "Activités", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
-            (<Ionicons name="heart" size={24} color="black" />) : (<Ionicons name="heart" size={24} color="gray" />)
+            (<Ionicons name="calendar" size={24} color="black" />) : (<Ionicons name="calendar-outline" size={24} color="gray" />)
+        }} />
+        <Tab.Screen name="Adcdtivity" component={ActivityScreen} options={{
+          tabBarLabel: "Contacts", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+            (<MaterialCommunityIcons name="contacts" size={24} color="black" />) : (<MaterialCommunityIcons name="contacts-outline" size={24} color="gray" />)
+        }} />
+        <Tab.Screen name="Acdtivity" component={ActivityScreen} options={{
+          tabBarLabel: "Chat", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+            (<Ionicons name="chatbox-ellipses" size={24} color="black" />) : (<Ionicons name="chatbox-ellipses-outline" size={24} color="gray" />)
         }} />
         <Tab.Screen name={isUserLoggedIn ? "Profile" : "Login"} component={isUserLoggedIn ? ProfileScreen : LoginScreen} options={{
-          tabBarLabel: isUserLoggedIn ? "Mon compte" : "Se connecter", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+          tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
             (<Ionicons name="person-circle-outline" size={24} color="black" />) : (<Ionicons name="person-circle-outline" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Register" component={RegisterScreen} options={{ tabBarButton: () => null }} />
