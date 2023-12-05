@@ -14,10 +14,10 @@ const LoginScreen = () => {
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
 
   useEffect(() => {
-    
+
     checkLoginStatus()
 
-  }, [])
+  })
 
   const handleLogin = (e) => {
     e.preventDefault()

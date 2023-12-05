@@ -25,7 +25,7 @@ const StackNavigator = () => {
 
   function BottomTabs() {
     return (
-      <Tab.Navigator>
+      <Tab.Navigator initialRouteName='Home'>
         <Tab.Screen name="Home" component={HomeScreen} options={{
           tabBarLabel: "Accueil", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
             (<Ionicons name="home" size={24} color="black" />) : (<Ionicons name="home" size={24} color="gray" />)
@@ -50,7 +50,7 @@ const StackNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName='Main'>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
