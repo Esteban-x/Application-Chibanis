@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image, Button } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import { UserContext, UserType } from '../UserContext'
 import { AuthContext } from '../AuthContext'
 import { useNavigation } from '@react-navigation/native'
+import { Header } from '@react-navigation/elements';
 import axios from 'axios'
 
 const ActivityScreen = () => {
@@ -44,8 +45,17 @@ const ActivityScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Header
+        title="Activités"
+        headerRight={() => (
+          <Button
+            title="Planning"
+            onPress={() => navigation.navigate('Planning')}
+          />
+        )}
+      />
       <View>
-        {activities.map((activity, index) => (
+        {Array.isArray(activities) && activities.map((activity, index) => (
           <View key={index} style={styles.activityCard}>
             <Text style={styles.title}> {activity.title}</Text>
             <Text style={styles.content}>{activity.content}</Text>

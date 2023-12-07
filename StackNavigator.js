@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from './AuthContext'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import AddActivityScreen from './screens/AddActivityScreen'
+import PlanningScreen from './screens/PlanningScreen'
 
 const StackNavigator = () => {
 
@@ -54,6 +55,9 @@ const StackNavigator = () => {
         )}
         {isUserLoggedIn && (
           <Tab.Screen name="AddActivity" component={AddActivityScreen} options={{ tabBarButton: () => null }} />
+        )}
+        {isUserLoggedIn && (
+          <Tab.Screen name="Planning" component={PlanningScreen} options={{ tabBarButton: () => null }} />
         )}
         <Tab.Screen name={isUserLoggedIn ? "Profile" : "Login"} component={isUserLoggedIn ? ProfileScreen : LoginScreen} options={{
           tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
