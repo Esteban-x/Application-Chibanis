@@ -1,83 +1,111 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UserContext, UserType } from '../UserContext'
-import base64 from 'react-native-base64'
-import axios from 'axios'
-import User from '../components/User'
 import { AuthContext } from '../AuthContext'
+import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
 const ActivityScreen = () => {
-  const [selectedButton, setSelectedButton] = useState("Personnes")
-  const [content, setContent] = useState("Personnes Content")
-  const [users, setUsers] = useState([])
   const { userId, setUserId } = useContext(UserType)
+  const [activities, setActivities] = useState([])
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
-  const handleButtonClick = (buttonName) => {
-    setSelectedButton(buttonName)
-  }
+  const navigation = useNavigation()
+
   useEffect(() => {
     checkLoginStatus()
-    const fetchUsers = async () => {
-      const token = await AsyncStorage.getItem("authToken")
-      const base64Url = token.split('.')[1]
-      const base64String = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-      const decodedToken = JSON.parse(base64.decode(base64String))
-      const userId = decodedToken.userId
-      setUserId(userId)
+    axios.get("http://10.0.0.2:3000/get-activities")
+      .then((res) => {
+        setActivities(res.data)
+      }).catch((err) => {
+        console.log("erreur lors de la recuperation des activités", err)
+      })
+  }, [])
 
-      axios.get(`http://10.0.2.2:3000/user/${userId}`).
-        then((response) => {
-          setUsers(response.data)
+  const handleParticipate = (activity) => {
+    if (activity.participants.includes(userId)) {
+      axios.put(`http://10.0.2.2:3000/activity/${activity._id}/${userId}/leave`)
+        .then((res) => {
+
         }).catch((err) => {
-          Alert.alert(err, "Erreur lors de la récupération des utilisateurs").toString()
+          console.log("erreur lors de l'annulation", err)
         })
     }
-    if (isUserLoggedIn) {
-      fetchUsers()
-    }
+    else {
+      axios.put(`http://10.0.2.2:3000/activity/${activity._id}/${userId}/participate`)
+        .then((res) => {
 
-  }, [])
-  console.log("autres utilisateurs :", users)
-  console.log("utilisateur connecté : ", userId)
+        }).catch((err) => {
+          console.log("erreur lors de la participation", err)
+        })
+    }
+  }
 
   return (
-    <ScrollView style={{ marginTop: 50 }}>
-      <View style={{ padding: 10 }}>
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-          Activités
-        </Text>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 12 }}>
-          <TouchableOpacity onPress={() => handleButtonClick("Personnes")} style={[{ flex: 1, paddingVertical: 10, paddingHorizontal: 20, backgroundColor: "white", borderColor: "#D0D0D0", borderRadius: 6, borderWidth: 0.7 }, selectedButton === "Personnes" ? { backgroundColor: "black" } : null]}>
-            <Text style={[{ textAlign: "center", fontWeight: "bold" }, selectedButton === "Personnes" ? { color: "white" } : { color: "black" }]}>
-              Personnes
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleButtonClick("Toutes")} style={[{ flex: 1, paddingVertical: 10, paddingHorizontal: 20, backgroundColor: "white", borderColor: "#D0D0D0", borderRadius: 6, borderWidth: 0.7 }, selectedButton === "Toutes" ? { backgroundColor: "black" } : null]}>
-            <Text style={[{ textAlign: "center", fontWeight: "bold" }, selectedButton === "Toutes" ? { color: "white" } : { color: "black" }]}>
-              Toutes
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleButtonClick("Demandes")} style={[{ flex: 1, paddingVertical: 10, paddingHorizontal: 20, backgroundColor: "white", borderColor: "#D0D0D0", borderRadius: 6, borderWidth: 0.7 }, selectedButton === "Demandes" ? { backgroundColor: "black" } : null]}>
-            <Text style={[{ textAlign: "center", fontWeight: "bold" }, selectedButton === "Demandes" ? { color: "white" } : { color: "black" }]}>
-              Demandes
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          {selectedButton === "Personnes" && (
-            <View style={{ marginTop: 50 }}>
-              {users?.map((item, index) => (
-                <User key={index} item={item}></User>
-              ))}
-            </View>
-          )}
-        </View>
+    <View style={styles.container}>
+      <View>
+        {activities.map((activity, index) => (
+          <View key={index} style={styles.activityCard}>
+            <Text style={styles.title}> {activity.title}</Text>
+            <Text style={styles.content}>{activity.content}</Text>
+            <Image source={{ uri: activity.image }} style={styles.image} />
+            {isUserLoggedIn && (
+              <TouchableOpacity onPress={() => handleParticipate(activity)}>
+                <Text>
+                  {activity.participants.includes(userId) ? "Ne plus participer" : "Participer"}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        ))}
+
       </View>
-    </ScrollView>
+      {isUserLoggedIn && (
+        <TouchableOpacity style={styles.addButton} onPress={() =>
+          navigation.navigate("Main", { screen: "AddActivity" })
+        }>
+          <Text style={styles.addButtonText}>Ajouter une activité</Text>
+        </TouchableOpacity>
+      )}
+    </View >
   )
 }
 
 export default ActivityScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  activityCard: {
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  content: {
+    marginTop: 10,
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    marginTop: 10,
+  },
+  addButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    padding: 10,
+    backgroundColor: 'blue',
+    borderRadius: 50,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 18,
+  }
+})

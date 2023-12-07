@@ -15,19 +15,19 @@ const jwt = require('jsonwebtoken')
 
 mongoose.connect('mongodb+srv://root:root@cluster0.b5pvpka.mongodb.net/')
     .then(() => {
-        console.log("Connexion à la base de données avec succès")
+
     })
     .catch((err) => {
-        console.log("Erreur lors de la connexion avec la base de données", err)
+
     })
 app.listen(port, () => {
-    console.log("Le serveur est lancé sur le port 3000")
+
 })
 
 //CONNEXION ET INSCRIPTION
 
 const User = require("./models/user")
-const Post = require("./models/post")
+const Activity = require("./models/activity")
 
 app.post('/register', async (req, res) => {
     try {
@@ -53,7 +53,7 @@ app.post('/register', async (req, res) => {
         res.status(200).json({ message: "Inscription avec succès !" })
     }
     catch (err) {
-        console.log("erreur lors de l'inscription", err)
+
         res.status(500).json({ message: "erreur lors de l'enregistrement de l'utilisateur" })
     }
 })
@@ -77,7 +77,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
         await transporter.sendMail(mailOptions)
     }
     catch (err) {
-        console.error("erreur lors de l'envoi de l'email de vérification", err)
+
     }
 }
 
@@ -95,7 +95,7 @@ app.get("/verify/:token", async (req, res) => {
         return res.status(200).json({ message: "Addresse email vérifiée" })
     }
     catch (err) {
-        console.log("lien invalide", err)
+
         res.status(500).json({ message: "Erreur lors de la vérification de l'adresse mail" })
     }
 })
@@ -122,7 +122,7 @@ app.post("/login", async (req, res) => {
         return res.status(200).json({ token })
     }
     catch (err) {
-        console.log("Erreur lors de la connexion")
+
         return res.status(500).json({ message: "La connexion a echoué" })
     }
 })
@@ -135,87 +135,90 @@ app.get("/user/:userId", (req, res) => {
         User.find({ _id: { $ne: loggedInUserId } }).then((users) => {
             res.status(200).json(users)
         }).catch((err) => {
-            console.log("Erreur ", err)
+
             res.status(500).json("erreur lors de la récupération des utilisateurs")
         })
     }
     catch (err) {
-        console.log("erreur lors de la récupération des utilisateurs")
+
         res.status(500).json({ message: "erreur lors de la récupération des utilisateurs" })
     }
 })
 
 //SYSTEME DE PUBLICATION
-app.post("/create-post", async (req, res) => {
+app.post("/create-activity", async (req, res) => {
     try {
-        const { content, userId } = req.body
-        const newPostData = {
+        const { content, userId, title, date, image } = req.body
+        const newActivityData = {
             user: userId,
+            title: title,
+            date: date,
+            image: image
         }
         if (content) {
-            newPostData.content = content
+            newActivityData.content = content
         }
-        const newPost = new Post(newPostData)
-        await newPost.save()
+        const newActivity = new Activity(newActivityData)
+        await newActivity.save()
 
-        res.status(200).json({ message: "Nouveau post créé" })
+        res.status(200).json({ message: "Nouvelle activité publié" })
 
     } catch (err) {
-        console.log(err)
+
         res.status(500).json({
             message: "erreur: ", err
         })
     }
 })
 
-//SYSTEME DE LIKE
-app.put("/post/:postId/:userId/like", async (req, res) => {
+//SYSTEME DE PARTICIPATION
+app.put("/activity/:activityId/:userId/participate", async (req, res) => {
     try {
-        const postId = req.params.postId
+        const activityId = req.params.activityId
         const userId = req.params.userId
-        const post = await Post.findById(postId).populate("user", "name")
-        const updatedPost = await Post.findByIdAndUpdate(postId,
-            { $addToSet: { likes: userId } },
+        const activity = await Activity.findById(activityId).populate("user", "name")
+        const updatedActivity = await Activity.findByIdAndUpdate(activityId,
+            { $addToSet: { participate: userId } },
             { new: true }
         )
-        if (!updatedPost) {
-            return res.status(404).json({ messsage: "post introuvable" })
+        if (!updatedActivity) {
+            return res.status(404).json({ messsage: "activité introuvable" })
         }
-        updatedPost.user = post.user
-        res.json(updatedPost)
+        updatedActivity.user = activity.user
+        res.json(updatedActivity)
     } catch (err) {
-        res.status(500).json({ message: "erreur lors du like: ", err })
+        res.status(500).json({ message: "erreur lors de la participation ", err })
     }
 })
 
-//SYSTEME DE DISLIKE
-app.put("/post/:postId/:userId/unlike", async (req, res) => {
+//ANNULATION DE LA PARTICIPATION
+app.put("/activity/:activityId/:userId/leave", async (req, res) => {
     try {
-        const postId = req.params.postId
+        const activityId = req.params.activityId
         const userId = req.params.userId
-        const post = await Post.findById(postId).populate("user", "name")
-        const updatedPost = await Post.findByIdAndUpdate(postId,
-            { $pull: { likes: userId } },
+        const activity = await Activity.findById(activityId).populate("user", "name")
+        const updatedActivity = await Activity.findByIdAndUpdate(activityId,
+            { $pull: { participate: userId } },
             { new: true }
         )
-        if (!updatedPost) {
-            return res.status(404).json({ messsage: "post introuvable" })
+        if (!updatedActivity) {
+            return res.status(404).json({ messsage: "activité introuvable" })
         }
-        updatedPost.user = post.user
-        res.json(updatedPost)
+        updatedActivity.user = activity.user
+        res.json(updatedActivity)
     } catch (err) {
-        res.status(500).json({ message: "erreur lors du dislike: ", err })
+        res.status(500).json({ message: "erreur lors de l'annulation ", err })
     }
 })
 
-//RECUPERER TOUS LES POST
-app.get("/get-posts", async (req, res) => {
+//RECUPERER TOUTES LES ACTIVITES
+app.get("/get-activities", async (req, res) => {
     try {
-        const posts = await Post.find().populate("user", "name").sort({ createdAt: -1 })
-        res.status(200).json(posts)
+        const activity = await Activity.find().populate("user", "name").sort({ createdAt: -1 })
+        res.status(200).json(activity)
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: "erreur lors de la récuperation de tous les post" })
+
+        res.status(500).json({ message: "erreur lors de la récuperation des activités" })
     }
 })
 
@@ -231,7 +234,7 @@ app.get("/profile/:userId", async (req, res) => {
         }
         return res.status(200).json({ user })
     } catch (err) {
-        console.log(err)
+
         res.status(500).json({ message: "erreur:", err })
     }
 })
