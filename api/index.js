@@ -178,7 +178,7 @@ app.put("/activity/:activityId/:userId/participate", async (req, res) => {
         const userId = req.params.userId
         const activity = await Activity.findById(activityId).populate("user", "name")
         const updatedActivity = await Activity.findByIdAndUpdate(activityId,
-            { $addToSet: { participate: userId } },
+            { $addToSet: { participants: userId } },
             { new: true }
         )
         if (!updatedActivity) {
@@ -198,7 +198,7 @@ app.put("/activity/:activityId/:userId/leave", async (req, res) => {
         const userId = req.params.userId
         const activity = await Activity.findById(activityId).populate("user", "name")
         const updatedActivity = await Activity.findByIdAndUpdate(activityId,
-            { $pull: { participate: userId } },
+            { $pull: { participants: userId } },
             { new: true }
         )
         if (!updatedActivity) {

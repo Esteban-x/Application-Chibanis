@@ -14,7 +14,8 @@ import ContactScreen from './screens/ContactScreen'
 import ChatScreen from './screens/ChatScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from './AuthContext'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import AddActivityScreen from './screens/AddActivityScreen'
 
 const StackNavigator = () => {
 
@@ -50,6 +51,9 @@ const StackNavigator = () => {
             tabBarLabel: "Chat", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
               (<Ionicons name="chatbox-ellipses" size={24} color="black" />) : (<Ionicons name="chatbox-ellipses-outline" size={24} color="gray" />)
           }} />
+        )}
+        {isUserLoggedIn && (
+          <Tab.Screen name="AddActivity" component={AddActivityScreen} options={{ tabBarButton: () => null }} />
         )}
         <Tab.Screen name={isUserLoggedIn ? "Profile" : "Login"} component={isUserLoggedIn ? ProfileScreen : LoginScreen} options={{
           tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?

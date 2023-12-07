@@ -8,11 +8,9 @@ const ActivitySchema = new mongoose.Schema({
         required: true
     },
     image: String,
-    date: {
-        type: Date,
-        default: Date.now
-    },
+    date: Date,
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    createdAt: { type: Date, default: Date.now },
 })
 
 const Activity = mongoose.model("Activity", ActivitySchema)

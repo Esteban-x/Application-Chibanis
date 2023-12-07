@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import { UserContext, UserType } from '../UserContext'
 import { AuthContext } from '../AuthContext'
@@ -6,26 +6,28 @@ import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 
 const ActivityScreen = () => {
-  const { userId, setUserId } = useContext(UserType)
+  const { userId } = useContext(UserType)
   const [activities, setActivities] = useState([])
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const navigation = useNavigation()
 
   useEffect(() => {
     checkLoginStatus()
-    axios.get("http://10.0.0.2:3000/get-activities")
+    axios.get("http://10.0.2.2:3000/get-activities")
       .then((res) => {
         setActivities(res.data)
       }).catch((err) => {
         console.log("erreur lors de la recuperation des activités", err)
       })
-  }, [])
+  })
 
   const handleParticipate = (activity) => {
     if (activity.participants.includes(userId)) {
       axios.put(`http://10.0.2.2:3000/activity/${activity._id}/${userId}/leave`)
         .then((res) => {
-
+          setActivities(prevActivities => prevActivities.map(act =>
+            act._id === activity._id ? res.data : act
+          ))
         }).catch((err) => {
           console.log("erreur lors de l'annulation", err)
         })
@@ -47,11 +49,11 @@ const ActivityScreen = () => {
           <View key={index} style={styles.activityCard}>
             <Text style={styles.title}> {activity.title}</Text>
             <Text style={styles.content}>{activity.content}</Text>
-            <Image source={{ uri: activity.image }} style={styles.image} />
-            {isUserLoggedIn && (
-              <TouchableOpacity onPress={() => handleParticipate(activity)}>
+            <Text style={styles.content}> {activity.image}</Text>
+            {isUserLoggedIn && activity && (
+              <TouchableOpacity style={styles.participateButtonText} onPress={() => handleParticipate(activity)}>
                 <Text>
-                  {activity.participants.includes(userId) ? "Ne plus participer" : "Participer"}
+                  {activity.participants && activity.participants.includes(userId) ? "Ne plus participer" : "Participer"}
                 </Text>
               </TouchableOpacity>
             )}
@@ -107,5 +109,17 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: '#fff',
     fontSize: 18,
-  }
+  },
+  participateButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: 'blue',
+    borderRadius: 5,
+  },
+  participateButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+
 })
