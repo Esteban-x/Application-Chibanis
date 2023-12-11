@@ -23,7 +23,7 @@ const ActivityScreen = () => {
   })
 
   const handleParticipate = (activity) => {
-    if (activity.participants.includes(userId)) {
+    if (activity.participants.map(participant => participant._id).includes(userId)) {
       axios.put(`http://10.0.2.2:3000/activity/${activity._id}/${userId}/leave`)
         .then((res) => {
           setActivities(prevActivities => prevActivities.map(act =>
@@ -45,32 +45,35 @@ const ActivityScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header
-        title="Activités"
-        headerRight={() => (
-          <Button
-            title="Planning"
-            onPress={() => navigation.navigate('Planning')}
-          />
-        )}
-      />
-      <View>
-        {Array.isArray(activities) && activities.map((activity, index) => (
-          <View key={index} style={styles.activityCard}>
-            <Text style={styles.title}> {activity.title}</Text>
-            <Text style={styles.content}>{activity.content}</Text>
-            <Text style={styles.content}> {activity.image}</Text>
-            {isUserLoggedIn && activity && (
-              <TouchableOpacity style={styles.participateButtonText} onPress={() => handleParticipate(activity)}>
-                <Text>
-                  {activity.participants && activity.participants.includes(userId) ? "Ne plus participer" : "Participer"}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        ))}
+      <ScrollView>
+        <Header
+          title="Activités"
+          headerRight={() => (
+            <Button
+              title="Planning"
+              onPress={() => navigation.navigate("Main", { screen: "Planning" })}
+            />
+          )}
+        />
+        <View>
+          {Array.isArray(activities) && activities.map((activity, index) => (
+            <View key={index} style={styles.activityCard}>
+              <Text style={styles.title}> {activity.title}</Text>
+              <Text style={styles.content}>{activity.content}</Text>
+              <Text style={styles.content}> {activity.image}</Text>
+              <Text style={styles.content}> Date : {activity.date}</Text>
+              {isUserLoggedIn && activity && (
+                <TouchableOpacity style={styles.participateButtonText} onPress={() => handleParticipate(activity)}>
+                  <Text>
+                    {activity.participants && activity.participants.map(participant => participant._id).includes(userId) ? "Ne plus participer" : "Participer"}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ))}
 
-      </View>
+        </View>
+      </ScrollView>
       {isUserLoggedIn && (
         <TouchableOpacity style={styles.addButton} onPress={() =>
           navigation.navigate("Main", { screen: "AddActivity" })
@@ -115,6 +118,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'blue',
     borderRadius: 50,
+    zIndex: 1,
   },
   addButtonText: {
     color: '#fff',

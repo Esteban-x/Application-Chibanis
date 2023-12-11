@@ -214,7 +214,7 @@ app.put("/activity/:activityId/:userId/leave", async (req, res) => {
 //RECUPERER TOUTES LES ACTIVITES
 app.get("/get-activities", async (req, res) => {
     try {
-        const activity = await Activity.find().populate("user", "name").sort({ createdAt: -1 })
+        const activity = await Activity.find().populate("user", "name").populate("participants", "name").sort({ createdAt: -1 })
         res.status(200).json(activity)
     } catch (err) {
 
