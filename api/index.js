@@ -239,3 +239,38 @@ app.get("/profile/:userId", async (req, res) => {
     }
 })
 
+//SYSTEME DE MESSAGERIE
+app.post("/message", (req, res) => {
+    const { sender, receiver, content } = req.body
+    if (!sender || !receiver || !content) {
+        return res.status(400).json({ message: "Tous les champs sont requis" })
+    }
+    const newMessage = new Message({
+        sender, receiver, content
+    })
+
+    newMessage.save()
+        .then(() => res.status(200).json({ message: "Message envoyé" }))
+        .catch(err => res.status(500).json({ message: "Erreur lors de l'envoi du message : ", err }))
+})
+
+app.get("/messages/:userId/:receiverId", (req, res) => {
+    const { userId, receiverId } = req.params
+
+    if (!userId || !receiverId) {
+        return res.status(500).json({
+            message: "Les deux utilisateurs son requis pour l'envoi du message : "
+        })
+    }
+
+    Message.find({
+        $or: [
+            { sender: userId, receiver: receiverId },
+            { sender: receiverId, receiver: userId }
+        ]
+    })
+        .sort({ timestamp: 1 })
+        .then(messages => res.status(200).json(messages))
+        .catch(err => res.status(500).json({ message: "Erreur lors de la récuperation des messages", error: err }))
+})
+

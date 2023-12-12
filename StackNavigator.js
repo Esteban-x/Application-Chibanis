@@ -12,11 +12,11 @@ import ActivityScreen from './screens/ActivityScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import ContactScreen from './screens/ContactScreen'
 import ChatScreen from './screens/ChatScreen'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from './AuthContext'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import AddActivityScreen from './screens/AddActivityScreen'
 import PlanningScreen from './screens/PlanningScreen'
+import UsersScreen from './screens/UsersScreen'
 
 const StackNavigator = () => {
 
@@ -48,7 +48,7 @@ const StackNavigator = () => {
             (<MaterialCommunityIcons name="contacts" size={24} color="black" />) : (<MaterialCommunityIcons name="contacts-outline" size={24} color="gray" />)
         }} />
         {isUserLoggedIn && (
-          <Tab.Screen name="Chat" component={ChatScreen} options={{
+          <Tab.Screen name="Chat" component={UsersScreen} options={{
             tabBarLabel: "Chat", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
               (<Ionicons name="chatbox-ellipses" size={24} color="black" />) : (<Ionicons name="chatbox-ellipses-outline" size={24} color="gray" />)
           }} />
@@ -58,6 +58,9 @@ const StackNavigator = () => {
         )}
         {isUserLoggedIn && (
           <Tab.Screen name="Planning" component={PlanningScreen} options={{ tabBarButton: () => null }} />
+        )}
+        {isUserLoggedIn && (
+          <Tab.Screen name="Message" component={ChatScreen} options={{ tabBarButton: () => null }} />
         )}
         <Tab.Screen name={isUserLoggedIn ? "Profile" : "Login"} component={isUserLoggedIn ? ProfileScreen : LoginScreen} options={{
           tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?

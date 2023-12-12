@@ -3,15 +3,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import StackNavigator from './StackNavigator';
 import { UserContext } from './UserContext';
 import { AuthProvider } from './AuthContext';
+import { MessageProvider } from './MessageContext';
 
 export default function App() {
   return (
     <>
-      <UserContext>
-        <AuthProvider>
-          <StackNavigator />
-        </AuthProvider>
-      </UserContext>
+      <MessageProvider>
+        <UserContext>
+          <AuthProvider>
+            <StackNavigator />
+          </AuthProvider>
+        </UserContext>
+      </MessageProvider>
     </>
   );
 }
