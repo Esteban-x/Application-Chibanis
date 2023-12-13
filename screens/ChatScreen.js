@@ -11,8 +11,8 @@ const ChatScreen = ({ route }) => {
     const receiverId = route.params.receiverId
 
     useEffect(() => {
-        axios.get(`http://10.0.2.2:3000/${userId}/${receiverId}`)
-            .then(res => setMessages(res.data)
+        axios.get(`http://10.0.2.2:3000/messages/${userId}/${receiverId}`)
+            .then(res => { setMessages(res.data), console.log(res.data) }
             )
             .catch(err => console.log("erreur lors de la récupération des messages", err))
     }, [userId, receiverId])
@@ -33,6 +33,7 @@ const ChatScreen = ({ route }) => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.messageBox}>
+                        <Text>{item.sender} :</Text>
                         <Text>{item.content}</Text>
                     </View>
                 )}

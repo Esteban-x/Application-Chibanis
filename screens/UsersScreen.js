@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, Image } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { UserType } from '../UserContext'
@@ -17,16 +17,25 @@ const UsersScreen = () => {
 
     return (
         <View style={styles.container}>
-            {users.map((user, index) => (
-                <Button
-                    key={index}
-                    title={user.name}
-                    onPress={() => navigation.navigate("Main", {
-                        screen: "Message",
-                        params: { receiverId: user._id }
-                    })}
-                />
-            ))}
+            <FlatList
+                data={users}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.userBox}>
+                        <Image source={{ uri: item.photo }} style={styles.userPhoto} />
+                        <Text>{item.name}</Text>
+                        <Text>{item.lastMessage}</Text>
+                        <Text>{item.lastMessageTime}</Text>
+                        <Button
+                            title=">"
+                            onPress={() => navigation.navigate("Main", {
+                                screen: "Message",
+                                params: { receiverId: item._id }
+                            })}
+                        />
+                    </View>
+                )}
+            />
         </View>
     )
 }
@@ -38,5 +47,27 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+    },
+    userBox: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ccc",
+    },
+    userPhoto: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+    },
+    messageBox: {
+        padding: 10,
+    },
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        width: '100%',
     },
 })
