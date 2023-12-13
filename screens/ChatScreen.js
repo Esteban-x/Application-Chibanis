@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { HeaderBackButton } from '@react-navigation/stack'
 import { GiftedChat } from 'react-native-gifted-chat'
-import { Text, Button } from 'react-native'
+import { Text, Button, TouchableOpacity } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 
 const ChatScreen = ({ route, navigation }) => {
     const [messages, setMessages] = useState([]);
-
+    const navigations = useNavigation()
     const userId = route.params.userId
     const receiverId = route.params.receiverId
     const receiverName = route.params.receiverName
@@ -19,9 +21,9 @@ const ChatScreen = ({ route, navigation }) => {
             ),
             headerTitleAlign: 'center',
             headerLeft: () => (
-                <HeaderBackButton label="Hello"
-                    onPress={() => navigation.goBack()}
-                />
+                <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigations.navigate("Main", { screen: "Chat" })}>
+                    <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
             )
         })
         axios.get(`http://10.0.2.2:3000/messages/${userId}/${receiverId}`)
