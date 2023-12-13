@@ -28,6 +28,7 @@ app.listen(port, () => {
 
 const User = require("./models/user")
 const Activity = require("./models/activity")
+const Message = require("./models/message")
 
 app.post('/register', async (req, res) => {
     try {

@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, View, TextInput } from 'react-native'
-import React, { useContext, useState, useEffect, Button } from 'react'
+import { FlatList, StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import React, { useContext, useState, useEffect, } from 'react'
 import { UserType } from '../UserContext'
 import { MessageContext } from '../MessageContext'
 import axios from 'axios'
@@ -18,7 +18,7 @@ const ChatScreen = ({ route }) => {
     }, [userId, receiverId])
 
     const sendMessage = () => {
-        axios.post("http://10.0.2.2:3000/message", { sender: userId, receiverId: receiverId, content: newMessage })
+        axios.post("http://10.0.2.2:3000/message", { sender: userId, receiver: receiverId, content: newMessage })
             .then(res => {
                 setMessages(oldMessages => [...oldMessages, res.data])
                 setNewMessage("")
