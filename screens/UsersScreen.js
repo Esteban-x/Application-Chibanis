@@ -30,7 +30,7 @@ const UsersScreen = () => {
                             title=">"
                             onPress={() => navigation.navigate("Main", {
                                 screen: "Message",
-                                params: { receiverId: item._id, receiverName: item.name }
+                                params: { receiverId: item._id, receiverName: item.name, userId: userId }
                             })}
                         />
                     </View>

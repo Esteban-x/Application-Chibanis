@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { HeaderBackButton } from '@react-navigation/stack'
 import { GiftedChat } from 'react-native-gifted-chat'
+import { Text, Button } from 'react-native'
 import axios from 'axios'
 
 const ChatScreen = ({ route, navigation }) => {
@@ -10,20 +12,34 @@ const ChatScreen = ({ route, navigation }) => {
     const receiverName = route.params.receiverName
 
     useEffect(() => {
+        console.log(userId, receiverId, receiverName)
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text>{receiverName}</Text>
+            ),
+            headerTitleAlign: 'center',
+            headerLeft: () => (
+                <HeaderBackButton label="Hello"
+                    onPress={() => navigation.goBack()}
+                />
+            )
+        })
         axios.get(`http://10.0.2.2:3000/messages/${userId}/${receiverId}`)
             .then(res => {
+                console.log("chargement des messages...")
                 setMessages(res.data.map(msg => ({
                     _id: msg._id,
                     text: msg.content,
                     createdAt: new Date(msg.timestamp),
                     user: {
                         _id: msg.sender === userId ? 1 : 2,
-                        name: msg.senderName,
+                        name: msg.senderName ? msg.senderName : "exemple",
                         avatar: 'https://placeimg.com/140/140/any',
                     },
                 })));
+                console.log("messages chargés")
             })
-            .catch(err => console.log("erreur lors de la récupération des messages", err))
+            .catch(err => console.log("erreur lors de la récupération des messages (client)", err))
     }, [userId, receiverId, receiverName, navigation])
 
     const onSend = (newMessage = []) => {
