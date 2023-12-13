@@ -34,7 +34,7 @@ const ChatScreen = ({ route, navigation }) => {
                     text: msg.content,
                     createdAt: new Date(msg.timestamp),
                     user: {
-                        _id: msg.sender === userId ? 1 : 2,
+                        _id: msg.sender,
                         name: msg.senderName ? msg.senderName : "exemple",
                         avatar: 'https://placeimg.com/140/140/any',
                     },
@@ -67,11 +67,11 @@ const ChatScreen = ({ route, navigation }) => {
             messages={messages}
             onSend={newMessage => onSend(newMessage)}
             user={{
-                _id: 1,
+                _id: userId,
             }}
             renderUsernameOnMessage={true}
         />
-    );
-};
+    )
+}
 
 export default ChatScreen;
