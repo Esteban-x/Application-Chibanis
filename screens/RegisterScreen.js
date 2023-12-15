@@ -1,32 +1,66 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable, Alert } from 'react-native'
 import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
+import { useNavigation } from '@react-navigation/native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
+import * as ImagePicker from 'expo-image-picker'
+import { Octicons } from '@expo/vector-icons';
+import axios from 'axios'
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
+  const [avatar, setAvatar] = useState(null)
+  const [age, setAge] = useState(null)
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [role, setRole] = useState("")
   const navigation = useNavigation()
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    })
+
+    if (!result.canceled) {
+      setAvatar(result.uri)
+    }
+  }
+
+
 
   const handleRegister = (e) => {
     e.preventDefault()
+
+    if (password !== confirmPassword) {
+      Alert.alert("Erreur", "Les mots de passe ne correspondent pas")
+      return
+    }
+
+    setRole("User")
+
     const user = {
       name: name,
       email: email,
-      password: password
+      password: password,
+      avatar: avatar,
+      age: age,
+      role: role,
     }
 
     axios.post('http://10.0.2.2:3000/register', user)
       .then((response) => {
         console.log(response)
-        Alert.alert("Inscription validée", "vous vous êtes inscrits avec succès")
+        Alert.alert("Inscription validée", `Un email de confirmation  a été envoyé à : " ${email} "`)
         setName("")
         setEmail("")
         setPassword("")
+        setAvatar(null)
         navigation.navigate("Login")
       }).catch((err) => {
         console.log("erreur lors de l'inscription", err)
@@ -35,8 +69,8 @@ const RegisterScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}>
-      <View style={{ marginTop: 50 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white", alignItems: "center", }}>
+      <View>
         <Image style={{ width: 150, height: 100, resizeMode: "contain" }}
           source={{ uri: "https://freelogopng.com/images/all_img/1688663386threads-logo-transparent.png" }}
         />
@@ -53,6 +87,28 @@ const RegisterScreen = () => {
         </View>
         <View style={{ marginTop: 20 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
+            <Octicons name="number" size={24} color="black" style={{ paddingLeft: 5 }} />
+            <TextInput
+              keyboardType='numeric'
+              onChangeText={(text) => {
+                setAge(text.replace(/[^0-9]/g, ''))
+              }}
+              value={age}
+              placeholder='entrez votre Age'
+              style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }}
+            />
+          </View>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
+            <FontAwesome name="picture-o" size={24} color="black" style={{ paddingLeft: 5 }} />
+            <Pressable onPress={pickImage}>
+              <Text style={{ paddingHorizontal: 10, width: 300, fontSize: avatar ? 16 : 16, color: "gray" }}>choisissez une Image</Text>
+            </Pressable>
+          </View>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <MaterialIcons name="email" size={24} color="black" style={{ paddingLeft: 5 }} />
             <TextInput value={email} onChangeText={setEmail} style={{ paddingHorizontal: 10, width: 300, fontSize: email ? 16 : 16 }} placeholder="entrez votre Email" />
           </View>
@@ -61,6 +117,12 @@ const RegisterScreen = () => {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <MaterialCommunityIcons name="form-textbox-password" style={{ paddingLeft: 5 }} size={24} color="black" />
             <TextInput value={password} onChangeText={setPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="entrez votre Mot de passe" />
+          </View>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
+            <MaterialCommunityIcons name="form-textbox-password" style={{ paddingLeft: 5 }} size={24} color="black" />
+            <TextInput value={confirmPassword} onChangeText={setConfirmPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="confirmez le Mot de passe" />
           </View>
         </View>
         <View style={{ marginTop: -10 }} />

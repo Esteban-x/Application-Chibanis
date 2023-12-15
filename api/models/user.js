@@ -14,8 +14,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    profilePicture: {
+    avatar: {
         type: String,
+    },
+    age: {
+        type: Number,
+        required: true,
     },
     joinDate: {
         type: Date,
@@ -23,16 +27,6 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String
-    },
-    sentFollowRequests: {
-        type: mongoose.Schema.Types.ObjectId, ref: "User"
-    },
-    receivedFollowRequests: {
-        type: mongoose.Schema.Types.ObjectId, ref: "User"
-
-    },
-    followers: {
-        type: mongoose.Schema.Types.ObjectId, ref: "User"
     },
     verified: {
         type: Boolean,

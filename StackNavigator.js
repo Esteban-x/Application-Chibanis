@@ -49,7 +49,7 @@ const StackNavigator = () => {
         }} />
         {isUserLoggedIn && (
           <Tab.Screen name="Chat" component={UsersScreen} options={{
-            tabBarLabel: "Chat", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+            tabBarLabel: "Chat", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
               (<Ionicons name="chatbox-ellipses" size={24} color="black" />) : (<Ionicons name="chatbox-ellipses-outline" size={24} color="gray" />)
           }} />
         )}

@@ -34,7 +34,7 @@ const LoginScreen = () => {
         navigation.replace('Main', { screen: 'Home' })
       }).catch((err) => {
         console.log("erreur lors de la connexion", err)
-        Alert.alert("Erreur lors de la connexion", err.toString())
+        Alert.alert("Erreur lors de la connexion", "Vos identifiants sont invalides")
       })
   }
   return (

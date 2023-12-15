@@ -1,73 +1,61 @@
-import { StyleSheet, Text, View, Button, FlatList, Image } from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, Image, Pressable } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { UserType } from '../UserContext'
 import { useNavigation } from '@react-navigation/native'
 
-const UsersScreen = () => {
+const UsersScreen = ({ navigation }) => {
     const { userId } = useContext(UserType)
     const [users, setUsers] = useState([])
-    const navigation = useNavigation()
+    const navigations = useNavigation()
 
     useEffect(() => {
         axios.get(`http://10.0.2.2:3000/user/${userId}`)
             .then((res) => setUsers(res.data))
             .catch((err) => console.error(err))
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text>Messages</Text>
+            ),
+            headerTitleAlign: 'center',
+        })
     }, [userId])
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={users}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.userBox}>
-                        <Image source={{ uri: item.photo }} style={styles.userPhoto} />
-                        <Text>{item.name}</Text>
-                        <Text>{item.lastMessage}</Text>
-                        <Text>{item.lastMessageTime}</Text>
-                        <Button
-                            title=">"
-                            onPress={() => navigation.navigate("Main", {
-                                screen: "Message",
-                                params: { receiverId: item._id, receiverName: item.name, userId: userId }
-                            })}
-                        />
+
+        <>
+            {users.map((user) => (
+                <Pressable
+                    key={user._id}
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 10,
+                        borderWidth: 0.7,
+                        borderColor: "#D0D0D0",
+                        borderTopWidth: 0,
+                        borderLeftWidth: 0,
+                        borderRightWidth: 0,
+                        padding: 10,
+                    }}
+                    onPress={() => navigations.navigate("Main",
+                        { screen: "Message", params: { receiverId: user._id, receiverName: user.name, userId: userId } })}
+                >
+                    <Image
+                        style={{ width: 50, height: 50, borderRadius: 25, resizeMode: "cover", }}
+                        source={{ uri: user.avatarUrl || "https://media.istockphoto.com/vectors/default-avatar-photo-placeholder-profile-icon-vector-id1313110704?k=20&m=1313110704&s=170667a&w=0&h=gE703WhYCETVYgDzUwElRoF6MbKffCcfzLpQVByIqdk=" }}
+                    />
+                    <View>
+                        <Text style={{ fontSize: 15, fontWeight: "500", }}>{user.name}</Text>
+                        <Text style={{ marginTop: 5, color: "gray", fontWeight: "500", }}>{user.lastMessage}</Text>
                     </View>
-                )} 
-            />
-        </View>
+                    <View>
+                        <Text style={{ fontSize: 11, fontWeight: "400", color: "#585858" }}>{user.lastMessageTime}</Text>
+                    </View>
+                </Pressable>
+            ))}
+        </>
     )
 }
 
 export default UsersScreen
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    userBox: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: "#ccc",
-    },
-    userPhoto: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-    },
-    messageBox: {
-        padding: 10,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        width: '100%',
-    },
-})

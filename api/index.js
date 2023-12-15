@@ -32,17 +32,20 @@ const Message = require("./models/message")
 
 app.post('/register', async (req, res) => {
     try {
-        const { name, email, password } = req.body
+        const { name, email, password, avatar, age, role } = req.body
         const existingUser = await User.findOne({ email })
 
         if (existingUser) {
-            return res.status(400).json({ message: "L'email est déja utilisé" })
+            return res.status(400).json({ message: "Cet email existe déja" })
         }
 
         const newUser = new User({
             name: name,
             password: password,
-            email: email
+            email: email,
+            avatar: avatar,
+            age: age,
+            role: role,
         })
 
         newUser.verificationToken = crypto.randomBytes(20).toString("hex")
