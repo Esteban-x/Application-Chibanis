@@ -5,10 +5,18 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    firstName: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
         unique: true
+    },
+    address: {
+        type: String,
+        required: true,
     },
     password: {
         type: String,
@@ -19,6 +27,10 @@ const userSchema = new mongoose.Schema({
     },
     age: {
         type: Number,
+        required: true,
+    },
+    birthday: {
+        type: Date,
         required: true,
     },
     joinDate: {

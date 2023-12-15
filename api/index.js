@@ -15,13 +15,13 @@ const jwt = require('jsonwebtoken')
 
 mongoose.connect('mongodb+srv://root:root@cluster0.b5pvpka.mongodb.net/')
     .then(() => {
-
+        console.log("connexion a la base de données réussie")
     })
     .catch((err) => {
-
+        console.log(err)
     })
 app.listen(port, () => {
-
+    console.log(`le serveur est connecté sur le port ${port}`)
 })
 
 //CONNEXION ET INSCRIPTION

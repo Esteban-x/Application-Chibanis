@@ -15,7 +15,10 @@ const RegisterScreen = () => {
   const [name, setName] = useState("")
   const [avatar, setAvatar] = useState(null)
   const [age, setAge] = useState(null)
+  const [firstName, setFirstName] = useState("")
+  const [birthday, setBirthday] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [address, setAddress] = useState("")
   const [role, setRole] = useState("")
   const navigation = useNavigation()
 
@@ -32,10 +35,17 @@ const RegisterScreen = () => {
     }
   }
 
-
+  const handleDateChange = (text) => {
+    let formattedText = text.replace(/[^0-9]/g, '');
+    if (formattedText.length > 2 && formattedText.length < 5) {
+      formattedText = formattedText.replace(/^(\d{2})/, '$1/');
+    } else if (formattedText.length >= 5) {
+      formattedText = formattedText.replace(/^(\d{2})(\d{2})/, '$1/$2/');
+    }
+    setBirthday(formattedText);
+  }
 
   const handleRegister = (e) => {
-    e.preventDefault()
 
     if (password !== confirmPassword) {
       Alert.alert("Erreur", "Les mots de passe ne correspondent pas")
@@ -46,10 +56,13 @@ const RegisterScreen = () => {
 
     const user = {
       name: name,
+      firstName: firstName,
       email: email,
       password: password,
       avatar: avatar,
+      birthday: birthday,
       age: age,
+      address: address,
       role: role,
     }
 
@@ -58,8 +71,12 @@ const RegisterScreen = () => {
         console.log(response)
         Alert.alert("Inscription validée", `Un email de confirmation  a été envoyé à : " ${email} "`)
         setName("")
+        setFirstName("")
         setEmail("")
         setPassword("")
+        setAddress("")
+        setBirthday(null)
+        setAge(null)
         setAvatar(null)
         navigation.navigate("Login")
       }).catch((err) => {
@@ -82,20 +99,18 @@ const RegisterScreen = () => {
         <View style={{ marginTop: 40 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <Ionicons name="person" size={24} style={{ paddingLeft: 5 }} color="black" />
-            <TextInput value={name} onChangeText={setName} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="entrez un Nom d'utilisateur" />
+            <TextInput value={name} onChangeText={setName} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="saisissez votre nom" />
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
-            <Octicons name="number" size={24} color="black" style={{ paddingLeft: 5 }} />
+            <Octicons name="calendar" size={24} color="black" style={{ paddingLeft: 5 }} />
             <TextInput
               keyboardType='numeric'
-              onChangeText={(text) => {
-                setAge(text.replace(/[^0-9]/g, ''))
-              }}
-              value={age}
-              placeholder='entrez votre Age'
-              style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }}
+              onChangeText={handleDateChange}
+              value={birthday}
+              placeholder='date de naissance (jj/mm/aaaa)'
+              style={{ paddingHorizontal: 10, width: 300, fontSize: birthday ? 16 : 16 }}
             />
           </View>
         </View>
@@ -103,26 +118,26 @@ const RegisterScreen = () => {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <FontAwesome name="picture-o" size={24} color="black" style={{ paddingLeft: 5 }} />
             <Pressable onPress={pickImage}>
-              <Text style={{ paddingHorizontal: 10, width: 300, fontSize: avatar ? 16 : 16, color: "gray" }}>choisissez une Image</Text>
+              <Text style={{ paddingHorizontal: 10, width: 300, fontSize: avatar ? 16 : 16, color: "gray" }}>choisissez une image</Text>
             </Pressable>
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <MaterialIcons name="email" size={24} color="black" style={{ paddingLeft: 5 }} />
-            <TextInput value={email} onChangeText={setEmail} style={{ paddingHorizontal: 10, width: 300, fontSize: email ? 16 : 16 }} placeholder="entrez votre Email" />
+            <TextInput value={email} onChangeText={setEmail} style={{ paddingHorizontal: 10, width: 300, fontSize: email ? 16 : 16 }} placeholder="saisissez votre adresse mail" />
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <MaterialCommunityIcons name="form-textbox-password" style={{ paddingLeft: 5 }} size={24} color="black" />
-            <TextInput value={password} onChangeText={setPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="entrez votre Mot de passe" />
+            <TextInput value={password} secureTextEntry onChangeText={setPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="choisissez un mot de passe" />
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <MaterialCommunityIcons name="form-textbox-password" style={{ paddingLeft: 5 }} size={24} color="black" />
-            <TextInput value={confirmPassword} onChangeText={setConfirmPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="confirmez le Mot de passe" />
+            <TextInput value={confirmPassword} secureTextEntry onChangeText={setConfirmPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="confirmez le mot de passe" />
           </View>
         </View>
         <View style={{ marginTop: -10 }} />
