@@ -32,7 +32,7 @@ const Message = require("./models/message")
 
 app.post('/register', async (req, res) => {
     try {
-        const { name, email, password, avatar, age, role } = req.body
+        const { name, email, password, avatar, age, role, firstname, address, birthday, phone, city } = req.body
         const existingUser = await User.findOne({ email })
 
         if (existingUser) {
@@ -41,11 +41,16 @@ app.post('/register', async (req, res) => {
 
         const newUser = new User({
             name: name,
-            password: password,
+            firstname: firstname,
             email: email,
+            password: password,
             avatar: avatar,
+            birthday: birthday,
             age: age,
+            address: address,
+            phone: phone,
             role: role,
+            city: city,
         })
 
         newUser.verificationToken = crypto.randomBytes(20).toString("hex")
