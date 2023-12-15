@@ -34,7 +34,7 @@ const UsersScreen = () => {
                             })}
                         />
                     </View>
-                )}
+                )} 
             />
         </View>
     )

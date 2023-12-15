@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { HeaderBackButton } from '@react-navigation/stack'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Text, Button, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
@@ -7,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 
 const ChatScreen = ({ route, navigation }) => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([])
     const navigations = useNavigation()
     const userId = route.params.userId
     const receiverId = route.params.receiverId
@@ -53,8 +52,8 @@ const ChatScreen = ({ route, navigation }) => {
                     createdAt: new Date(res.data.timestamp),
                     user: {
                         _id: res.data.sender,
-                        name: res.data.senderName, // Remplacez par le nom de l'utilisateur
-                        avatar: 'https://placeimg.com/140/140/any', // Remplacez par l'URL de l'avatar de l'utilisateur
+                        name: res.data.senderName,
+                        avatar: 'https://placeimg.com/140/140/any',
                     },
                 };
                 setMessages(previousMessages => GiftedChat.append(previousMessages, messageFromServer));
