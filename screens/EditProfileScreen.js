@@ -97,7 +97,14 @@ const EditProfileScreen = ({ route, navigation }) => {
                     text: "Supprimer",
                     style: "destructive",
                     onPress: () => {
-
+                        axios.delete(`http://10.0.2.2:3000/delete/${userId}`)
+                            .then((res) => {
+                                console.log(res)
+                                Alert.alert("Compte supprimé avec succés")
+                                navigation.navigate("Main", { screen: "Register" })
+                            }).catch((err) => {
+                                console.log("erreur lors de la demande de suppression", err)
+                            })
                     }
                 }
             ]
@@ -137,8 +144,32 @@ const EditProfileScreen = ({ route, navigation }) => {
             <Text style={styles.label}>Avatar</Text>
             <TextInput style={styles.input} value={user.avatar} onChangeText={(value) => setUser({ ...user, avatar: value })} />
 
-            <Button style={{ marginBottom: 10 }} title="Enregistrer" onPress={handleSave} />
-            <Button title="Supprimer le compte" onPress={handleDeleteAccount} color="red" />
+            <TouchableOpacity
+                style={{
+                    marginTop: 10,
+                    backgroundColor: '#3498db',
+                    padding: 10,
+                    borderRadius: 5,
+                    alignItems: 'center'
+                }}
+                onPress={handleSave}
+            >
+                <Text style={{ color: 'white', fontSize: 16 }}>Enregistrer</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                    marginTop: 10,
+                    marginBottom: 40,
+                    backgroundColor: '#e74c3c',
+                    padding: 10,
+                    borderRadius: 5,
+                    alignItems: 'center'
+                }}
+                onPress={handleDeleteAccount}
+            >
+                <Text style={{ color: 'white', fontSize: 16 }}>Supprimer le compte</Text>
+            </TouchableOpacity>
+
         </ScrollView>
     )
 }

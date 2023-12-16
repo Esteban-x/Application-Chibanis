@@ -231,7 +231,7 @@ app.get("/get-activities", async (req, res) => {
     }
 })
 
-//AFFICHAGE DU PROFIL
+//INFORMATIONS DU COMPTE
 app.get("/profile/:userId", async (req, res) => {
     try {
         const userId = req.params.userId
@@ -248,7 +248,7 @@ app.get("/profile/:userId", async (req, res) => {
     }
 })
 
-//MODIFICATION DU PROFIL
+//MODIFICATION DU COMPTE
 app.post("/profile/edit/:userId", async (req, res) => {
     try {
         const userId = req.params.userId
@@ -272,6 +272,21 @@ app.post("/profile/edit/:userId", async (req, res) => {
     } catch (err) {
         console.log("Erreur lors de la modification du compte", err)
         res.status(500).json({ message: "erreur lors de la modification du compte", err })
+    }
+})
+
+//SUPPRESSION DU COMPTE
+app.delete("/delete/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId
+        const user = await User.findByIdAndDelete(userId)
+        if (!user) {
+            return res.status(404).json({ message: "L'utilisateur n'existe pas" })
+        }
+        res.status(200).json({ message: "L'utilisateur a bien été supprimé" })
+    } catch (err) {
+        console.log("erreur lors de la suppression du compte", err)
+        res.status(500).json({ message: "Erreur lors de la suppression du compte" })
     }
 })
 

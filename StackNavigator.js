@@ -68,7 +68,7 @@ const StackNavigator = () => {
             (<Ionicons name="person-circle-outline" size={24} color="black" />) : (<Ionicons name="person-circle-outline" size={24} color="gray" />)
         }} />
         {isUserLoggedIn && (
-          <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ tabBarButton: () => null }} />
+          <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ tabBarButton: () => null, tabBarStyle: { display: "none" } }} />
         )}
         <Tab.Screen name="Register" component={RegisterScreen} options={{ tabBarButton: () => null }} />
       </Tab.Navigator>
