@@ -47,10 +47,17 @@ const EditProfileScreen = ({ route, navigation }) => {
         setUser({ ...user, birthday: formattedText })
     }
 
-    const birthDayToDate = (birthday) => {
+    const calculateAge = (birthday) => {
         const [day, month, year] = birthday.split('/')
         const birthDate = new Date(`${year}-${month}-${day}`)
-        setUser({ ...user, birthday: birthDate })
+
+        const today = new Date()
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
     }
 
     const handleSave = () => {
@@ -59,12 +66,18 @@ const EditProfileScreen = ({ route, navigation }) => {
             return
         }
 
-        birthDayToDate(user.birthday)
+        const age = calculateAge(user.birthday);
 
-        axios.post(`http://10.0.2.2:3000/profile/edit/${userId}`, user)
+        const updatedUser = {
+            ...user,
+            age: age,
+        }
+
+        axios.post(`http://10.0.2.2:3000/profile/edit/${userId}`, updatedUser)
             .then((res) => {
                 console.log("Succès", res)
-                navigation.navigate("Main", { screen: "Profile" })
+                setUser(updatedUser)
+                navigation.navigate("Main", { screen: "Profile", params: { user: updatedUser } })
             }).catch((err) => {
                 console.error("Erreur lors de la modification", err)
                 Alert.alert("Erreur", "la modification du profil a échoué")

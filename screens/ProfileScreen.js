@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../AuthContext'
 
-const ProfileScreen = () => {
+const ProfileScreen = (route) => {
   const navigation = useNavigation()
   const [user, setUser] = useState("")
   const { userId, setUserId } = useContext(UserType)
@@ -56,7 +56,7 @@ const ProfileScreen = () => {
         <Text style={styles.infoItem}>Role : {user?.role === "User" ? ("Adhérent") : ('Administrateur')} </Text>
       </View>
       <View style={styles.profileActions}>
-        <Pressable onPress={() => navigation.navigate("Main", { screen: "EditProfile", params: { user: user} })} style={styles.actionButton}>
+        <Pressable onPress={() => navigation.navigate("Main", { screen: "EditProfile", params: { user: user } })} style={styles.actionButton}>
           <Text style={styles.actionText}>Modifier mon profil</Text>
         </Pressable>
         <Pressable onPress={handleLogout} style={styles.actionButton}>

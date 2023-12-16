@@ -252,13 +252,13 @@ app.get("/profile/:userId", async (req, res) => {
 app.post("/profile/edit/:userId", async (req, res) => {
     try {
         const userId = req.params.userId
-        const { name, firstname, email, birthday, password, phone, address, city, avatar } = req.body
+        const { name, firstname, email, birthday, password, phone, address, city, avatar, age } = req.body
 
         const user = await User.updateOne(
             { _id: userId },
             {
                 $set: {
-                    name, firstname, email, birthday, password, phone, address, city, avatar
+                    name, firstname, email, birthday, password, phone, address, city, avatar, age
                 }
             }
         )
@@ -267,7 +267,7 @@ app.post("/profile/edit/:userId", async (req, res) => {
             return res.status(404).json({ message: "Utilisateur non existant" })
         }
 
-        return res.status(200).json({ message: "Profil mofifié" })
+        return res.status(200).json({ message: "Profil modifié" })
 
     } catch (err) {
         console.log("Erreur lors de la modification du compte", err)

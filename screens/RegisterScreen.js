@@ -78,9 +78,8 @@ const RegisterScreen = () => {
     setRole("User")
 
     const age = calculateAge(birthday);
+    
     setAge(age);
-
-    birthDayToDate(birthday)
 
     const user = {
       name: name,
@@ -136,7 +135,7 @@ const RegisterScreen = () => {
           <View style={{ marginTop: 20 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <Ionicons name="person-outline" size={24} color="black" style={{ paddingLeft: 5 }} />
-              <TextInput value={firstname} onChangeText={setFirstname} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="saisissez votre prénom" />
+              <TextInput value={firstname} onChangeText={setFirstname} style={{ paddingHorizontal: 10, width: 300, fontSize: firstname ? 16 : 16 }} placeholder="saisissez votre prénom" />
             </View>
           </View>
           <View style={{ marginTop: 20 }}>
@@ -148,7 +147,7 @@ const RegisterScreen = () => {
           <View style={{ marginTop: 20 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <MaterialIcons name="phone-iphone" size={24} color="black" style={{ paddingLeft: 5 }} />
-              <TextInput value={phone} onChangeText={setPhone} style={{ paddingHorizontal: 10, width: 300, fontSize: email ? 16 : 16 }} maxLength={10} keyboardType="numeric" placeholder="saisissez votre numéro de téléphone" />
+              <TextInput value={phone} onChangeText={setPhone} style={{ paddingHorizontal: 10, width: 300, fontSize: phone ? 16 : 16 }} maxLength={10} keyboardType="numeric" placeholder="saisissez votre numéro de téléphone" />
             </View>
           </View>
           <View style={{ marginTop: 20 }}>
@@ -167,13 +166,13 @@ const RegisterScreen = () => {
           <View style={{ marginTop: 20 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <FontAwesome5 name="address-card" size={24} color="black" style={{ paddingLeft: 5 }} />
-              <TextInput value={address} onChangeText={setAddress} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="saisissez votre addresse" />
+              <TextInput value={address} onChangeText={setAddress} style={{ paddingHorizontal: 10, width: 300, fontSize: address ? 16 : 16 }} placeholder="saisissez votre addresse" />
             </View>
           </View>
           <View style={{ marginTop: 20 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <MaterialIcons name="location-city" size={24} color="black" style={{ paddingLeft: 5 }} />
-              <TextInput value={city} onChangeText={setCity} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="saisissez votre ville" />
+              <TextInput value={city} onChangeText={setCity} style={{ paddingHorizontal: 10, width: 300, fontSize: city ? 16 : 16 }} placeholder="saisissez votre ville" />
             </View>
           </View>
           <View style={{ marginTop: 20 }}>
@@ -193,7 +192,7 @@ const RegisterScreen = () => {
           <View style={{ marginTop: 20 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <MaterialCommunityIcons name="form-textbox-password" style={{ paddingLeft: 5 }} size={24} color="black" />
-              <TextInput value={confirmPassword} secureTextEntry onChangeText={setConfirmPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="confirmez le mot de passe" />
+              <TextInput value={confirmPassword} secureTextEntry onChangeText={setConfirmPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: confirmPassword ? 16 : 16 }} placeholder="confirmez le mot de passe" />
             </View>
           </View>
           <View style={{ marginTop: -10 }} />
