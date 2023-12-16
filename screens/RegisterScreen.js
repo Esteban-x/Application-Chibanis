@@ -49,7 +49,10 @@ const RegisterScreen = () => {
   }
 
   const calculateAge = (birthday) => {
-    const birthDate = new Date(birthday)
+
+    const [day, month, year] = birthday.split('/')
+    const birthDate = new Date(`${year}-${month}-${day}`)
+
     const today = new Date()
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDifference = today.getMonth() - birthDate.getMonth();
@@ -57,6 +60,12 @@ const RegisterScreen = () => {
       age--
     }
     return age
+  }
+
+  const birthDayToDate = (birthday) => {
+    const [day, month, year] = birthday.split('/')
+    const birthDate = new Date(`${year}-${month}-${day}`)
+    setBirthday(birthDate)
   }
 
   const handleRegister = () => {
@@ -71,6 +80,8 @@ const RegisterScreen = () => {
     const age = calculateAge(birthday);
     setAge(age);
 
+    birthDayToDate(birthday)
+
     const user = {
       name: name,
       firstname: firstname,
@@ -84,6 +95,8 @@ const RegisterScreen = () => {
       role: role,
       city: city,
     }
+
+    console.log(user)
 
     axios.post('http://10.0.2.2:3000/register', user)
       .then((response) => {
