@@ -22,7 +22,7 @@ const RegisterScreen = () => {
   const [address, setAddress] = useState("")
   const [city, setCity] = useState("")
   const [role, setRole] = useState("")
-  const [phone, setPhone] = useState(null)
+  const [phone, setPhone] = useState("")
   const navigation = useNavigation()
 
   const pickImage = async () => {
@@ -107,10 +107,10 @@ const RegisterScreen = () => {
         setEmail("")
         setPassword("")
         setAddress("")
-        setBirthday(null)
-        setAge(null)
-        setAvatar(null)
-        setPhone(null)
+        setBirthday("")
+        setAge(0)
+        setAvatar("")
+        setPhone("")
         setRole("")
         setCity("")
         navigation.navigate("Login")

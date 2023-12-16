@@ -17,6 +17,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import AddActivityScreen from './screens/AddActivityScreen'
 import PlanningScreen from './screens/PlanningScreen'
 import UsersScreen from './screens/UsersScreen'
+import EditProfileScreen from './screens/EditProfileScreen'
 
 const StackNavigator = () => {
 
@@ -66,6 +67,9 @@ const StackNavigator = () => {
           tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
             (<Ionicons name="person-circle-outline" size={24} color="black" />) : (<Ionicons name="person-circle-outline" size={24} color="gray" />)
         }} />
+        {isUserLoggedIn && (
+          <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ tabBarButton: () => null }} />
+        )}
         <Tab.Screen name="Register" component={RegisterScreen} options={{ tabBarButton: () => null }} />
       </Tab.Navigator>
     )

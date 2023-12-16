@@ -25,10 +25,6 @@ const ProfileScreen = () => {
     fetchProfile()
   })
 
-  const handleEdit = (user) => {
-
-  }
-
   const handleLogout = () => {
     clearAuthToken()
   }
@@ -37,7 +33,7 @@ const ProfileScreen = () => {
     await AsyncStorage.removeItem("authToken")
     console.log("le token a été supprimé")
     checkLoginStatus()
-    navigation.navigate("Main", { screen: "Home" })
+    navigation.navigate("Main", { screen: "Login" })
   }
   return (
     <View style={styles.container}>
@@ -48,7 +44,7 @@ const ProfileScreen = () => {
       <View style={styles.profileInfo}>
         <Text style={styles.infoTitle}>Infos du compte</Text>
         <Text style={styles.infoItem}>Nom : {user?.name}</Text>
-        <Text style={styles.infoItem}>Prénom: {user?.firstName}</Text>
+        <Text style={styles.infoItem}>Prénom: {user?.firstname}</Text>
         <Text style={styles.infoItem}>Email : {user?.email}</Text>
         <Text style={styles.infoItem}>Téléphone: {user?.phone}</Text>
         <Text style={styles.infoItem}>Addresse : {user?.address}</Text>
@@ -57,9 +53,10 @@ const ProfileScreen = () => {
         <Text style={styles.infoItem}>Date de naissance :  {user?.birthday}</Text>
         <Text style={styles.infoItem}>Mot de passe :  {user?.password}</Text>
         <Text style={styles.infoItem}>Inscrit le : {user?.joinDate} </Text>
+        <Text style={styles.infoItem}>Role : {user?.role === "User" ? ("Adhérent") : ('Administrateur')} </Text>
       </View>
       <View style={styles.profileActions}>
-        <Pressable onPress={handleEdit} style={styles.actionButton}>
+        <Pressable onPress={() => navigation.navigate("Main", { screen: "EditProfile", params: { user: user} })} style={styles.actionButton}>
           <Text style={styles.actionText}>Modifier mon profil</Text>
         </Pressable>
         <Pressable onPress={handleLogout} style={styles.actionButton}>

@@ -248,6 +248,33 @@ app.get("/profile/:userId", async (req, res) => {
     }
 })
 
+//MODIFICATION DU PROFIL
+app.post("/profile/edit/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId
+        const { name, firstname, email, birthday, password, phone, address, city, avatar } = req.body
+
+        const user = await User.updateOne(
+            { _id: userId },
+            {
+                $set: {
+                    name, firstname, email, birthday, password, phone, address, city, avatar
+                }
+            }
+        )
+
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non existant" })
+        }
+
+        return res.status(200).json({ message: "Profil mofifié" })
+
+    } catch (err) {
+        console.log("Erreur lors de la modification du compte", err)
+        res.status(500).json({ message: "erreur lors de la modification du compte", err })
+    }
+})
+
 //SYSTEME DE MESSAGERIE
 app.post("/message", (req, res) => {
     const { sender, receiver, content } = req.body
