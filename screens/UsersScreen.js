@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, FlatList, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, Image, Pressable, ScrollView } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { UserType } from '../UserContext'
@@ -23,7 +23,7 @@ const UsersScreen = ({ navigation }) => {
 
     return (
 
-        <>
+        <ScrollView>
             {users.map((user) => (
                 <Pressable
                     key={user._id}
@@ -54,7 +54,7 @@ const UsersScreen = ({ navigation }) => {
                     </View>
                 </Pressable>
             ))}
-        </>
+        </ScrollView>
     )
 }
 

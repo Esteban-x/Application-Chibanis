@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: '#f5f5f5',
-    marginTop: 30,
+    marginTop: "10%",
   },
   profileHeader: {
     flexDirection: 'row',
