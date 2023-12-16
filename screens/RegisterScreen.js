@@ -62,12 +62,6 @@ const RegisterScreen = () => {
     return age
   }
 
-  const birthDayToDate = (birthday) => {
-    const [day, month, year] = birthday.split('/')
-    const birthDate = new Date(`${year}-${month}-${day}`)
-    setBirthday(birthDate)
-  }
-
   const handleRegister = () => {
 
     if (password !== confirmPassword) {
@@ -78,7 +72,7 @@ const RegisterScreen = () => {
     setRole("User")
 
     const age = calculateAge(birthday);
-    
+
     setAge(age);
 
     const user = {

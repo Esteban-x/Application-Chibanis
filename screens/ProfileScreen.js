@@ -10,7 +10,7 @@ const ProfileScreen = (route) => {
   const navigation = useNavigation()
   const [user, setUser] = useState("")
   const { userId, setUserId } = useContext(UserType)
-  const { IsUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
+  const { checkLoginStatus } = useContext(AuthContext)
 
   useEffect(() => {
     const fetchProfile = async () => {

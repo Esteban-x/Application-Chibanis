@@ -1,5 +1,7 @@
 import { Text, StyleSheet, View, TextInput, Button, Alert, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { AuthContext } from '../AuthContext'
 import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext'
 import axios from 'axios'
@@ -8,32 +10,35 @@ const EditProfileScreen = ({ route, navigation }) => {
     const { userId } = useContext(UserType)
     const [user, setUser] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
 
     useEffect(() => {
 
-        navigation.setOptions({
-            headerTitle: () => (
-                <Text>Modifier le profil</Text>
-            ),
-            headerTitleAlign: 'center',
-            headerLeft: () => (
-                <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Profile" })}>
-                    <Ionicons name="arrow-back" size={24} color="black" />
-                </TouchableOpacity>
-            )
-        })
+        checkLoginStatus()
 
-        const fetchUser = async () => {
-            try {
-                const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
-                setUser(response.data.user)
-                console.log(user)
-            } catch (err) {
-                console.log(user, err)
-            }
+        if (isUserLoggedIn) {
+            navigation.setOptions({
+                headerTitle: () => (
+                    <Text>Modifier le profil</Text>
+                ),
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                    <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Profile" })}>
+                        <Ionicons name="arrow-back" size={24} color="black" />
+                    </TouchableOpacity>
+                )
+            })
         }
 
-        fetchUser()
+        const fetchUser = async () => {
+            console.log("recuperation des données du compte....")
+            const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
+            setUser(response.data.user)
+        }
+
+        if (isUserLoggedIn) {
+            fetchUser()
+        }
 
     }, [])
 
@@ -61,6 +66,7 @@ const EditProfileScreen = ({ route, navigation }) => {
     }
 
     const handleSave = () => {
+        console.log("handleDeleteAccount a été appelé")
         if (user.password !== confirmPassword) {
             Alert.alert("Erreur", "les mots de passe ne correspondent pas")
             return
@@ -85,6 +91,7 @@ const EditProfileScreen = ({ route, navigation }) => {
     }
 
     const handleDeleteAccount = () => {
+        console.log("handleDelete a été appelé")
         Alert.alert(
             "Supprimer le compte",
             "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
@@ -96,15 +103,22 @@ const EditProfileScreen = ({ route, navigation }) => {
                 {
                     text: "Supprimer",
                     style: "destructive",
-                    onPress: () => {
-                        axios.delete(`http://10.0.2.2:3000/delete/${userId}`)
-                            .then((res) => {
-                                console.log(res)
-                                Alert.alert("Compte supprimé avec succés")
-                                navigation.navigate("Main", { screen: "Register" })
-                            }).catch((err) => {
-                                console.log("erreur lors de la demande de suppression", err)
-                            })
+                    onPress: async () => {
+                        try {
+                            await axios.delete(`http://10.0.2.2:3000/delete/${userId}`)
+                            console.log("Compte supprimé avec succès");
+                            try {
+                                await AsyncStorage.removeItem("authToken")
+                                console.log("Token supprimé avec succès");
+                            }
+                            catch (err) {
+                                console.log("Erreur lors de la suppression du token", err)
+                            }
+                            checkLoginStatus();
+                        } catch (err) {
+                            console.log("Erreur lors de la demande de suppression", err);
+                        }
+                        navigation.navigate("Main", { screen: "Home" });
                     }
                 }
             ]
