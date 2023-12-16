@@ -40,21 +40,30 @@ const ProfileScreen = () => {
     navigation.navigate("Main", { screen: "Home" })
   }
   return (
-    <View style={{ flexDirection: "column", justifyContent: "center", alignText: "center", alignItems: "center", gap: 20, marginTop: 55, padding: 15 }}>
-      <View>
-        <Image style={{ width: 60, height: 60, borderRadius: 30, resizeMode: "contain" }} source={{ uri: "http://cdn-icons-png.flaticon.com/128/149/149071.png" }} />
+    <View style={styles.container}>
+      <View style={styles.profileHeader}>
+        <Image style={styles.avatar} source={{ uri: "http://cdn-icons-png.flaticon.com/128/149/149071.png" }} />
+        <Text style={styles.profileName}>{user?.firstname} {user?.name}</Text>
       </View>
-      <View style={{ textAlign: "center" }}>
-        <Text style={{ textAlign: "center", fontWeight: 400, fontSize: 15 }}>Nom d'utilisateur : {user?.name}</Text>
-        <Text style={{ textAlign: "center", fontWeight: 400, fontSize: 15 }}>Email: {user?.email}</Text>
-        <Text style={{ textAlign: "center", fontWeight: 400, fontSize: 15 }}>Inscrit le : {user?.joinDate} </Text>
+      <View style={styles.profileInfo}>
+        <Text style={styles.infoTitle}>Infos du compte</Text>
+        <Text style={styles.infoItem}>Nom : {user?.name}</Text>
+        <Text style={styles.infoItem}>Prénom: {user?.firstName}</Text>
+        <Text style={styles.infoItem}>Email : {user?.email}</Text>
+        <Text style={styles.infoItem}>Téléphone: {user?.phone}</Text>
+        <Text style={styles.infoItem}>Addresse : {user?.address}</Text>
+        <Text style={styles.infoItem}>Ville : {user?.city}</Text>
+        <Text style={styles.infoItem}>Age :  {user?.age}</Text>
+        <Text style={styles.infoItem}>Date de naissance :  {user?.birthday}</Text>
+        <Text style={styles.infoItem}>Mot de passe :  {user?.password}</Text>
+        <Text style={styles.infoItem}>Inscrit le : {user?.joinDate} </Text>
       </View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-        <Pressable onPress={handleEdit} style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 10, borderColor: "#D0D0D0", borderWidth: 1, borderRadius: 5 }}>
-          <Text>Modifier mon profil</Text>
+      <View style={styles.profileActions}>
+        <Pressable onPress={handleEdit} style={styles.actionButton}>
+          <Text style={styles.actionText}>Modifier mon profil</Text>
         </Pressable>
-        <Pressable onPress={handleLogout} style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 10, borderColor: "#D0D0D0", borderWidth: 1, borderRadius: 5 }}>
-          <Text>Déconnexion</Text>
+        <Pressable onPress={handleLogout} style={styles.actionButton}>
+          <Text style={styles.actionText}>Déconnexion</Text>
         </Pressable>
       </View>
     </View>
@@ -63,4 +72,55 @@ const ProfileScreen = () => {
 
 export default ProfileScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 15,
+    backgroundColor: '#f5f5f5',
+    marginTop: 30,
+  },
+  profileHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 15,
+  },
+  profileName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  profileInfo: {
+    marginBottom: 20,
+  },
+  infoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  infoItem: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  profileActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  actionButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderColor: '#D0D0D0',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  actionText: {
+    fontSize: 16,
+  },
+})
