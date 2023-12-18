@@ -14,6 +14,7 @@ const ProfileScreen = (route) => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!userId) return
       try {
         const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
         const { user } = response.data
@@ -23,7 +24,7 @@ const ProfileScreen = (route) => {
       }
     }
     fetchProfile()
-  })
+  }, [userId])
 
   const handleLogout = () => {
     clearAuthToken()
