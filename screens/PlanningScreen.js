@@ -16,7 +16,7 @@ const PlanningScreen = () => {
     axios.get("http://10.0.2.2:3000/get-activities")
       .then((res) => {
         const activitiesByDate = res.data.reduce((acc, activity) => {
-          const date = activity.date.split('T')[0]; // Assurez-vous que la date est au format 'yyyy-mm-dd'
+          const date = activity.date.split('T')[0]
           if (!acc[date]) {
             acc[date] = { dots: [{ key: date, color: 'blue', selectedDotColor: 'white' }], selected: true, activityList: [] };
           }
@@ -27,7 +27,7 @@ const PlanningScreen = () => {
       }).catch((err) => {
         console.log("erreur lors de la recuperation des activités", err)
       })
-  }, []);
+  }, [activities]);
 
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
@@ -60,7 +60,7 @@ const PlanningScreen = () => {
           <Text>Date: {selectedDate}</Text>
           <Text>Activité: {activity.title}</Text>
           <Text>Contenu: {activity.content}</Text>
-          <Text>Participants: {activity.participants.map(participant => participant.name).join(', ')}</Text>
+          <Text>Participants: {activity.participants.map(participant => participant.firstname).join(', ')}</Text>
         </View>
       ))}
     </View>

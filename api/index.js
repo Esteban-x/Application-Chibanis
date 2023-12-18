@@ -180,12 +180,12 @@ app.post("/create-activity", async (req, res) => {
     }
 })
 
-//SYSTEME DE PARTICIPATION
+//PARTICIPATION
 app.put("/activity/:activityId/:userId/participate", async (req, res) => {
     try {
         const activityId = req.params.activityId
         const userId = req.params.userId
-        const activity = await Activity.findById(activityId).populate("user", "name")
+        const activity = await Activity.findById(activityId).populate("user", "firstname")
         const updatedActivity = await Activity.findByIdAndUpdate(activityId,
             { $addToSet: { participants: userId } },
             { new: true }
@@ -223,7 +223,7 @@ app.put("/activity/:activityId/:userId/leave", async (req, res) => {
 //RECUPERER TOUTES LES ACTIVITES
 app.get("/get-activities", async (req, res) => {
     try {
-        const activity = await Activity.find().populate("user", "name").populate("participants", "name").sort({ createdAt: -1 })
+        const activity = await Activity.find().populate("user", "firstname").populate("participants", "firstname").sort({ createdAt: -1 })
         res.status(200).json(activity)
     } catch (err) {
 
@@ -280,7 +280,7 @@ app.delete("/delete/:userId", async (req, res) => {
     try {
         const userId = req.params.userId
         const user = await User.findByIdAndDelete(userId)
-        
+
         res.status(200).json({ message: "L'utilisateur a bien été supprimé" })
     } catch (err) {
         console.log("erreur lors de la suppression du compte", err)

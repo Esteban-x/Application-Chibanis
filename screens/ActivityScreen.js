@@ -29,6 +29,7 @@ const ActivityScreen = () => {
           setActivities(prevActivities => prevActivities.map(act =>
             act._id === activity._id ? res.data : act
           ))
+          console.log("Utilisateur retiré de l'activité : ", res.data.participants)
         }).catch((err) => {
           console.log("erreur lors de l'annulation", err)
         })
@@ -36,7 +37,7 @@ const ActivityScreen = () => {
     else {
       axios.put(`http://10.0.2.2:3000/activity/${activity._id}/${userId}/participate`)
         .then((res) => {
-
+          console.log("Utilisateur qui participe: ", res.data.participants)
         }).catch((err) => {
           console.log("erreur lors de la participation", err)
         })
