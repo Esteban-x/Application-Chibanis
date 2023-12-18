@@ -21,7 +21,7 @@ const ChatScreen = ({ route, navigation }) => {
             ),
             headerTitleAlign: 'center',
             headerLeft: () => (
-                <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Profile" })}>
+                <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Chat" })}>
                     <Ionicons name="arrow-back" size={24} color="black" />
                 </TouchableOpacity>
             )
@@ -63,16 +63,15 @@ const ChatScreen = ({ route, navigation }) => {
             .catch(err => console.error(err))
     }
 
-    return (
-        <GiftedChat
-            messages={messages}
-            onSend={newMessage => onSend(newMessage)}
-            user={{
-                _id: userId,
-            }}
-            renderUsernameOnMessage={true}
-        />
-    )
+    return <GiftedChat
+        messages={messages}
+        onSend={newMessage => onSend(newMessage)}
+        user={{
+            _id: userId,
+        }}
+        renderUsernameOnMessage={true}
+    />
+
 }
 
 export default ChatScreen;

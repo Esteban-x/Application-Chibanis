@@ -20,7 +20,7 @@ const ProfileScreen = (route) => {
         const { user } = response.data
         setUser(user)
       } catch (err) {
-        console.error(err)
+        console.error("erreur get profile", err)
       }
     }
     fetchProfile()

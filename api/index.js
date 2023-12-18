@@ -220,6 +220,20 @@ app.put("/activity/:activityId/:userId/leave", async (req, res) => {
     }
 })
 
+//RECUPERER UNE ACTIVITE
+app.get("/activity/:activityId/", async (req, res) => {
+    try {
+        const { activityId } = req.params
+        const activity = await Activity.findById(activityId)
+        if (!activity) {
+            return res.status(404).json({ message: "activité introuvable" })
+        }
+        res.status(200).json(activity)
+    } catch (err) {
+        console.log("erreur lors de la recuperation de l'activité", err)
+    }
+})
+
 //RECUPERER TOUTES LES ACTIVITES
 app.get("/get-activities", async (req, res) => {
     try {
@@ -272,6 +286,26 @@ app.post("/profile/edit/:userId", async (req, res) => {
     } catch (err) {
         console.log("Erreur lors de la modification du compte", err)
         res.status(500).json({ message: "erreur lors de la modification du compte", err })
+    }
+})
+
+//MODIFICATION DE L'ACTIVITE
+app.post(`/activity/edit/:activityId`, async (req, res) => {
+    try {
+        const { activityId } = req.params
+        const { title, content, user, image, date } = req.body
+        const activity = await Activity.updateOne(
+            { _id: activityId },
+            {
+                $set: { title, content, user, image, date }
+            }
+        )
+        if (!activity) return res.status(404).json({
+            message: "activité introuvable"
+        })
+        return res.status(200).json({ message: "activité modifié" })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
     }
 })
 

@@ -31,6 +31,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         }
 
         const fetchUser = async () => {
+            if (!isUserLoggedIn) return
             console.log("recuperation des données du compte....")
             const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
             setUser(response.data.user)

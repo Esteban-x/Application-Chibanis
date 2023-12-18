@@ -18,6 +18,7 @@ import AddActivityScreen from './screens/AddActivityScreen'
 import PlanningScreen from './screens/PlanningScreen'
 import UsersScreen from './screens/UsersScreen'
 import EditProfileScreen from './screens/EditProfileScreen'
+import EditActivityScreen from './screens/EditActivityScreen'
 
 const StackNavigator = () => {
 
@@ -69,6 +70,9 @@ const StackNavigator = () => {
         }} />
         {isUserLoggedIn && (
           <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ tabBarButton: () => null, tabBarStyle: { display: "none" } }} />
+        )}
+        {isUserLoggedIn && (
+          <Tab.Screen name="EditActivity" component={EditActivityScreen} options={{ tabBarButton: () => null, tabBarStyle: { display: "none" } }} />
         )}
         <Tab.Screen name="Register" component={RegisterScreen} options={{ tabBarButton: () => null }} />
       </Tab.Navigator>

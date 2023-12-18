@@ -6,9 +6,10 @@ import { useNavigation } from '@react-navigation/native'
 import { Header } from '@react-navigation/elements';
 import axios from 'axios'
 
-const ActivityScreen = ({ navigation }) => {
+const ActivityScreen = ({ navigation, route }) => {
   const { userId, userRole } = useContext(UserType)
   const [activities, setActivities] = useState([])
+  const [activityId, setActivityId] = useState("")
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const navigations = useNavigation()
 
@@ -20,7 +21,7 @@ const ActivityScreen = ({ navigation }) => {
       }).catch((err) => {
         console.log("erreur lors de la recuperation des activités", err)
       })
-  })
+  }, [activities])
 
   const handleParticipate = (activity) => {
     if (activity.participants.map(participant => participant._id).includes(userId)) {
@@ -68,6 +69,34 @@ const ActivityScreen = ({ navigation }) => {
                   <Text style={styles.participateButtonText}>
                     {activity.participants && activity.participants.map(participant => participant._id).includes(userId) ? "Ne plus participer" : "Participer"}
                   </Text>
+                </TouchableOpacity>
+              )}
+              {userRole === "Admin" && (
+                <TouchableOpacity style={{
+                  marginTop: 10,
+                  padding: 10,
+                  backgroundColor: 'green',
+                  borderRadius: 5,
+
+                  width: "30%",
+                }}
+                  onPress={() => {
+                    navigation.navigate("Main", { screen: "EditActivity", params: { activityId: activity._id } })
+                  }}>
+                  <Text style={{ color: "white", textAlign: "center", }}>Modifier</Text>
+                </TouchableOpacity>
+              )}
+              {userRole === "Admin" && (
+                <TouchableOpacity style={{
+                  marginTop: 10,
+                  padding: 10,
+                  backgroundColor: 'red',
+                  borderRadius: 5,
+
+                  width: "30%",
+                }}
+                >
+                  <Text style={{ color: "white", textAlign: "center", }}>Supprimer</Text>
                 </TouchableOpacity>
               )}
             </View>
