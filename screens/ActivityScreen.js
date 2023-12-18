@@ -45,6 +45,32 @@ const ActivityScreen = ({ navigation, route }) => {
     }
   }
 
+  const handleDeleteActivity = (activityId) => {
+    console.log("suppression en cours...")
+    Alert.alert(
+      "Supprimer l'activité",
+      "Êtes-vous sûr de vouloir supprimer l'activité ? Cette action est irréversible.",
+      [
+        {
+          text: "Annuler",
+          style: "cancel",
+        },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await axios.delete(`http://10.0.2.2:3000/delete/${activityId}`)
+              console.log("Activité supprimé avec succès");
+            } catch (err) {
+              console.log("Erreur lors de la demande de suppression", err);
+            }
+          }
+        }
+      ]
+    )
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -95,6 +121,9 @@ const ActivityScreen = ({ navigation, route }) => {
 
                   width: "30%",
                 }}
+                  onPress={() => {
+                    handleDeleteActivity(activity._id)
+                  }}
                 >
                   <Text style={{ color: "white", textAlign: "center", }}>Supprimer</Text>
                 </TouchableOpacity>

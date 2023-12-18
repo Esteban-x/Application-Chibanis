@@ -309,6 +309,19 @@ app.post(`/activity/edit/:activityId`, async (req, res) => {
     }
 })
 
+//SUPPRESSION DE L'ACTIVITE
+app.delete("/delete/:activityId", async (req, res) => {
+    try {
+        const activityId = req.params.activityId
+        const activity = await Activity.findByIdAndDelete(activityId)
+
+        res.status(200).json({ message: "L'activité a bien été supprimé" })
+    } catch (err) {
+        console.log("erreur lors de la suppression de l'activité", err)
+        res.status(500).json({ message: "Erreur lors de la suppression de l'activité" })
+    }
+})
+
 //SUPPRESSION DU COMPTE
 app.delete("/delete/:userId", async (req, res) => {
     try {
