@@ -15,6 +15,18 @@ const ChatScreen = ({ route, navigation }) => {
     useEffect(() => {
         console.log(userId, receiverId, receiverName)
 
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text>{receiverName}</Text>
+            ),
+            headerTitleAlign: 'center',
+            headerLeft: () => (
+                <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Profile" })}>
+                    <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
+            )
+        })
+
         axios.get(`http://10.0.2.2:3000/messages/${userId}/${receiverId}`)
             .then(res => {
                 console.log("chargement des messages...")

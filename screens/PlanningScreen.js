@@ -2,17 +2,27 @@ import React, { useEffect, useState, useContext, } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
+import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../AuthContext';
-import { UserType } from '../UserContext';
 
-const PlanningScreen = () => {
+const PlanningScreen = ({ navigation }) => {
   const [activities, setActivities] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
-  const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
-  const { userId } = useContext(UserType)
+  const { checkLoginStatus } = useContext(AuthContext)
 
   useEffect(() => {
     checkLoginStatus()
+    navigation.setOptions({
+      headerTitle: () => (
+        <Text>Planning</Text>
+      ),
+      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Activity" })}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+      )
+    })
     axios.get("http://10.0.2.2:3000/get-activities")
       .then((res) => {
         const activitiesByDate = res.data.reduce((acc, activity) => {

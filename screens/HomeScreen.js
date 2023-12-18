@@ -13,11 +13,12 @@ import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from '../AuthContext'
 
 const HomeScreen = () => {
-  const { userId, setUserId } = useContext(UserType)
+  const { userId, setUserId, userRole, setUserRole } = useContext(UserType)
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
+  const [user, setUser] = useState("")
   useEffect(() => {
     checkLoginStatus()
-    const fetchLoggedInUser = async () => {
+    const fetchLoggedInUserId = async () => {
       const token = await AsyncStorage.getItem("authToken")
       const base64Url = token.split('.')[1]
       const base64String = base64Url.replace(/-/g, '+').replace(/_/g, '/')
@@ -25,14 +26,28 @@ const HomeScreen = () => {
       const userId = decodedToken.userId
       setUserId(userId)
     }
+    const fetchLoggedInUser = async () => {
+      await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
+        .then((res) => {
+          const { user } = res.data
+          setUser(user)
+          console.log(user)
+          setUserRole(user.role)
+          console.log(userRole)
+        }).catch((err) => {
+          console.log("erreur lors de la récupération de l'utilisateur :", err)
+        })
+    }
     if (isUserLoggedIn) {
-      fetchLoggedInUser()
+      fetchLoggedInUserId().then(() => {
+        fetchLoggedInUser()
+      })
     }
   }, [])
 
   return (
     <View>
-     
+
     </View>
   )
 }

@@ -6,11 +6,11 @@ import { useNavigation } from '@react-navigation/native'
 import { Header } from '@react-navigation/elements';
 import axios from 'axios'
 
-const ActivityScreen = () => {
-  const { userId } = useContext(UserType)
+const ActivityScreen = ({ navigation }) => {
+  const { userId, userRole } = useContext(UserType)
   const [activities, setActivities] = useState([])
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
-  const navigation = useNavigation()
+  const navigations = useNavigation()
 
   useEffect(() => {
     checkLoginStatus()
@@ -50,10 +50,10 @@ const ActivityScreen = () => {
         <Header
           title="Activités"
           headerRight={() => (
-            <Button
+            userRole === "Admin" && (<Button
               title="Planning"
-              onPress={() => navigation.navigate("Main", { screen: "Planning" })}
-            />
+              onPress={() => navigations.navigate("Main", { screen: "Planning" })}
+            />)
           )}
         />
         <View>
@@ -64,8 +64,8 @@ const ActivityScreen = () => {
               <Text style={styles.content}> {activity.image}</Text>
               <Text style={styles.content}> Date : {activity.date}</Text>
               {isUserLoggedIn && activity && (
-                <TouchableOpacity style={styles.participateButtonText} onPress={() => handleParticipate(activity)}>
-                  <Text>
+                <TouchableOpacity style={styles.participateButton} onPress={() => handleParticipate(activity)}>
+                  <Text style={styles.participateButtonText}>
                     {activity.participants && activity.participants.map(participant => participant._id).includes(userId) ? "Ne plus participer" : "Participer"}
                   </Text>
                 </TouchableOpacity>
@@ -74,8 +74,8 @@ const ActivityScreen = () => {
           ))}
 
         </View>
-      </ScrollView>
-      {isUserLoggedIn && (
+      </ScrollView >
+      {userRole === "Admin" && (
         <TouchableOpacity style={styles.addButton} onPress={() =>
           navigation.navigate("Main", { screen: "AddActivity" })
         }>
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   addButtonText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 18,
   },
   participateButton: {
@@ -130,6 +130,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'blue',
     borderRadius: 5,
+    color: "white",
+    width: "30%",
   },
   participateButtonText: {
     color: '#fff',

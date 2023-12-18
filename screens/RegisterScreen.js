@@ -69,8 +69,6 @@ const RegisterScreen = () => {
       return
     }
 
-    setRole("User")
-
     const age = calculateAge(birthday);
 
     setAge(age);
@@ -85,7 +83,7 @@ const RegisterScreen = () => {
       age: age,
       address: address,
       phone: phone,
-      role: role,
+      role: "User",
       city: city,
     }
 

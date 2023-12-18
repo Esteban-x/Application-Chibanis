@@ -14,9 +14,7 @@ const LoginScreen = () => {
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
 
   useEffect(() => {
-
     checkLoginStatus()
-
   })
 
   const handleLogin = () => {
@@ -27,7 +25,6 @@ const LoginScreen = () => {
     console.log(email, password)
     axios.post('http://10.0.2.2:3000/login', user)
       .then((response) => {
-        console.log(response)
         const token = response.data.token
         AsyncStorage.setItem("authToken", token)
         checkLoginStatus()
