@@ -9,7 +9,7 @@ import { AuthContext } from '../AuthContext'
 const ProfileScreen = (route) => {
   const navigation = useNavigation()
   const [user, setUser] = useState("")
-  const { userId, setUserId } = useContext(UserType)
+  const { userId, setUserId, setUserRole, } = useContext(UserType)
   const { checkLoginStatus } = useContext(AuthContext)
 
   useEffect(() => {
@@ -32,6 +32,9 @@ const ProfileScreen = (route) => {
   const clearAuthToken = async () => {
     await AsyncStorage.removeItem("authToken")
     console.log("le token a été supprimé")
+    setUser("")
+    setUserId("")
+    setUserRole("")
     checkLoginStatus()
     navigation.navigate("Main", { screen: "Login" })
   }

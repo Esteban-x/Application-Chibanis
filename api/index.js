@@ -128,7 +128,7 @@ app.post("/login", async (req, res) => {
         }
         const token = jwt.sign({ userId: user._id }, secretKey)
 
-        return res.status(200).json({ token })
+        return res.status(200).json({ token, user })
     }
     catch (err) {
 

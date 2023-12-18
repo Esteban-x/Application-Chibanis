@@ -6,11 +6,14 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../AuthContext';
+import { UserType } from '../UserContext';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigation = useNavigation()
+  const { userId, setUserId, setUserRole, userRole } = useContext(UserType)
+  const [user, setUser] = useState("")
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
 
   useEffect(() => {
@@ -28,6 +31,10 @@ const LoginScreen = () => {
         const token = response.data.token
         AsyncStorage.setItem("authToken", token)
         checkLoginStatus()
+        const userData = response.data.user
+        setUser(userData)
+        setUserId(userData.id)
+        setUserRole(userData.role)
         navigation.replace('Main', { screen: 'Home' })
       }).catch((err) => {
         console.log("erreur lors de la connexion", err)
