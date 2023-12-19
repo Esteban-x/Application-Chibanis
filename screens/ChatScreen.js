@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Text, Button, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
@@ -45,7 +45,7 @@ const ChatScreen = ({ route, navigation }) => {
             .catch(err => console.log("erreur lors de la récupération des messages (client)", err))
     }, [userId, receiverId, receiverName, navigation])
 
-    const onSend = (newMessage = []) => {
+    const onSend = useCallback((newMessage = []) => {
         axios.post("http://10.0.2.2:3000/message", { sender: userId, receiver: receiverId, content: newMessage[0].text })
             .then(res => {
                 const messageFromServer = {
@@ -61,17 +61,18 @@ const ChatScreen = ({ route, navigation }) => {
                 setMessages(previousMessages => GiftedChat.append(previousMessages, messageFromServer));
             })
             .catch(err => console.error(err))
-    }
+    }, [userId, receiverId])
 
-    return <GiftedChat
-        messages={messages}
-        onSend={newMessage => onSend(newMessage)}
-        user={{
-            _id: userId,
-        }}
-        renderUsernameOnMessage={true}
-    />
-
+    return (
+        <GiftedChat
+            messages={messages}
+            onSend={newMessage => onSend(newMessage)}
+            user={{
+                _id: userId,
+            }}
+            renderUsernameOnMessage={true}
+        />
+    )
 }
 
 export default ChatScreen;
