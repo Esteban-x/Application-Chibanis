@@ -13,8 +13,9 @@ const ProfileScreen = (route) => {
   const { checkLoginStatus, isUserLoggedIn } = useContext(AuthContext)
 
   useEffect(() => {
+    checkLoginStatus()
     const fetchProfile = async () => {
-      if (!userId || !user || !isUserLoggedIn) return
+      if (!userId || !isUserLoggedIn) return
       try {
         const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
         const { user } = response.data
@@ -23,11 +24,12 @@ const ProfileScreen = (route) => {
         console.error("erreur get profile", err)
       }
     }
-    fetchProfile()
+    if (isUserLoggedIn) { fetchProfile() }
   }, [user])
 
   const handleLogout = () => {
     clearAuthToken()
+    checkLoginStatus()
   }
 
   const clearAuthToken = async () => {

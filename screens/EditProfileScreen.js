@@ -25,8 +25,12 @@ const EditProfileScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
             )
         })
+        
+        checkLoginStatus()
+
 
         const fetchUser = async () => {
+            checkLoginStatus()
             if (!isUserLoggedIn) return
             console.log("recuperation des données du compte....")
             const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
@@ -40,7 +44,7 @@ const EditProfileScreen = ({ route, navigation }) => {
 
         console.log("voici les données de l'utilisateur : ", user)
 
-    }, [])
+    }, [user]) //a supprimer si sa bug
 
 
 

@@ -39,13 +39,29 @@ const RegisterScreen = () => {
   }
 
   const handleDateChange = (text) => {
-    let formattedText = text.replace(/[^0-9]/g, '')
+    let formattedText = text.replace(/[^0-9]/g, '');
     if (formattedText.length > 2 && formattedText.length < 5) {
-      formattedText = formattedText.replace(/^(\d{2})/, '$1/')
+      formattedText = formattedText.replace(/^(\d{2})/, '$1/');
     } else if (formattedText.length >= 5) {
-      formattedText = formattedText.replace(/^(\d{2})(\d{2})/, '$1/$2/')
+      formattedText = formattedText.replace(/^(\d{2})(\d{2})/, '$1/$2/');
     }
-    setBirthday(formattedText)
+    setBirthday(formattedText);
+  }
+
+  const validateDate = (date) => {
+    const dateParts = date.split("/");
+    if (dateParts.length !== 3) {
+      return false;
+    }
+    const day = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10);
+    const year = parseInt(dateParts[2], 10);
+    const currentYear = new Date().getFullYear();
+
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < currentYear - 100 || year > currentYear) {
+      return false;
+    }
+    return true;
   }
 
   const calculateAge = (birthday) => {
@@ -62,6 +78,16 @@ const RegisterScreen = () => {
     return age
   }
 
+  const validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(String(email).toLowerCase())
+  }
+
+  const validatePhone = (phone) => {
+    const re = /^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$/
+    return re.test(phone)
+  }
+
   const handleRegister = () => {
 
     if (password !== confirmPassword) {
@@ -69,46 +95,54 @@ const RegisterScreen = () => {
       return
     }
 
-    const age = calculateAge(birthday);
+    if (validateEmail(email) && validatePhone(phone) && validateDate(birthday)) {
 
-    setAge(age);
+      const age = calculateAge(birthday)
 
-    const user = {
-      name: name,
-      firstname: firstname,
-      email: email,
-      password: password,
-      avatar: avatar,
-      birthday: birthday,
-      age: age,
-      address: address,
-      phone: phone,
-      role: "User",
-      city: city,
+      setAge(age)
+
+      const user = {
+        name: name,
+        firstname: firstname,
+        email: email,
+        password: password,
+        avatar: avatar,
+        birthday: birthday,
+        age: age,
+        address: address,
+        phone: phone,
+        role: "User",
+        city: city,
+      }
+
+      console.log(user)
+
+      axios.post('http://10.0.2.2:3000/register', user)
+        .then((response) => {
+          console.log(response)
+          Alert.alert("Inscription validée", `Un email de confirmation  a été envoyé à : " ${email} "`)
+          setName("")
+          setFirstname("")
+          setEmail("")
+          setPassword("")
+          setAddress("")
+          setBirthday("")
+          setAge(0)
+          setAvatar("")
+          setPhone("")
+          setRole("")
+          setCity("")
+          navigation.navigate("Login")
+        }).catch((err) => {
+          console.log("erreur lors de l'inscription", err)
+          Alert.alert("Erreur lors de l'inscription", err.toString())
+        })
     }
-
-    console.log(user)
-
-    axios.post('http://10.0.2.2:3000/register', user)
-      .then((response) => {
-        console.log(response)
-        Alert.alert("Inscription validée", `Un email de confirmation  a été envoyé à : " ${email} "`)
-        setName("")
-        setFirstname("")
-        setEmail("")
-        setPassword("")
-        setAddress("")
-        setBirthday("")
-        setAge(0)
-        setAvatar("")
-        setPhone("")
-        setRole("")
-        setCity("")
-        navigation.navigate("Login")
-      }).catch((err) => {
-        console.log("erreur lors de l'inscription", err)
-        Alert.alert("Erreur lors de l'inscription", err.toString())
-      })
+    else {
+      if (!validateEmail(email)) { Alert.alert("Email invalide", "veuillez remplir un email valide") }
+      if (!validatePhone(phone)) { Alert.alert("Numéro invalide", "veuillez remplir un numéro de téléphone valide") }
+      if (!validateDate(birthday)) { Alert.alert("Date invalide", "veuillez remplir une date valide") }
+    }
   }
 
   return (
@@ -121,13 +155,13 @@ const RegisterScreen = () => {
           <View style={{ marginTop: 40 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <Ionicons name="person" size={24} style={{ paddingLeft: 5 }} color="black" />
-              <TextInput value={name} onChangeText={setName} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="saisissez votre nom" />
+              <TextInput value={name} onChangeText={setName} maxLength={20} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="saisissez votre nom" />
             </View>
           </View>
           <View style={{ marginTop: 20 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <Ionicons name="person-outline" size={24} color="black" style={{ paddingLeft: 5 }} />
-              <TextInput value={firstname} onChangeText={setFirstname} style={{ paddingHorizontal: 10, width: 300, fontSize: firstname ? 16 : 16 }} placeholder="saisissez votre prénom" />
+              <TextInput value={firstname} onChangeText={setFirstname} maxLength={20} style={{ paddingHorizontal: 10, width: 300, fontSize: firstname ? 16 : 16 }} placeholder="saisissez votre prénom" />
             </View>
           </View>
           <View style={{ marginTop: 20 }}>
@@ -171,7 +205,7 @@ const RegisterScreen = () => {
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <FontAwesome name="picture-o" size={24} color="black" style={{ paddingLeft: 5 }} />
               <Pressable onPress={pickImage}>
-                <Text style={{ paddingHorizontal: 10, width: 300, fontSize: avatar ? 16 : 16, color: "gray" }}>choisissez une image</Text>
+                <Text style={{ paddingHorizontal: 10, width: 300, fontSize: avatar ? 16 : 16, color: "gray" }}>choisissez une photo de profil</Text>
               </Pressable>
             </View>
           </View>
