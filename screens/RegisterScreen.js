@@ -135,7 +135,7 @@ const RegisterScreen = () => {
           navigation.navigate("Login")
         }).catch((err) => {
           console.log("erreur lors de l'inscription", err)
-          Alert.alert("Erreur lors de l'inscription", err.toString())
+          Alert.alert("Compte déja existant", err.response.data.message)
         })
     }
     else {

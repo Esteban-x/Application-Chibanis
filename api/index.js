@@ -63,7 +63,7 @@ app.post('/register', async (req, res) => {
     }
     catch (err) {
 
-        res.status(500).json({ message: "erreur lors de l'enregistrement de l'utilisateur" })
+        res.status(500).json({ message: "Un compte avec le même email ou le même numéro de téléphone existe déja" })
     }
 })
 
