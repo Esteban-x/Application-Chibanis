@@ -10,11 +10,11 @@ const ProfileScreen = (route) => {
   const navigation = useNavigation()
   const [user, setUser] = useState("")
   const { userId, setUserId, setUserRole, } = useContext(UserType)
-  const { checkLoginStatus } = useContext(AuthContext)
+  const { checkLoginStatus, isUserLoggedIn } = useContext(AuthContext)
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!userId) return
+      if (!userId || !user || !isUserLoggedIn) return
       try {
         const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
         const { user } = response.data

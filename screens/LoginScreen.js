@@ -61,7 +61,7 @@ const LoginScreen = () => {
         <View style={{ marginTop: 20 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <MaterialCommunityIcons name="form-textbox-password" style={{ paddingLeft: 5 }} size={24} color="black" />
-            <TextInput value={password} onChangeText={setPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="entrez votre Mot de passe" />
+            <TextInput value={password} secureTextEntry onChangeText={setPassword} style={{ paddingHorizontal: 10, width: 300, fontSize: password ? 16 : 16 }} placeholder="entrez votre Mot de passe" />
           </View>
         </View>
         <View style={{ flexDirection: "row", paddingHorizontal: 20, alignItems: "center", justifyContent: "space-between", marginTop: 20 }}>

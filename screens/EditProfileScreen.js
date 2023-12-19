@@ -7,41 +7,42 @@ import { UserType } from '../UserContext'
 import axios from 'axios'
 
 const EditProfileScreen = ({ route, navigation }) => {
-    const { userId } = useContext(UserType)
+    const { userId, setUserId } = useContext(UserType)
     const [user, setUser] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
 
     useEffect(() => {
 
-        checkLoginStatus()
-
-        if (isUserLoggedIn) {
-            navigation.setOptions({
-                headerTitle: () => (
-                    <Text>Modifier le profil</Text>
-                ),
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                    <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Profile" })}>
-                        <Ionicons name="arrow-back" size={24} color="black" />
-                    </TouchableOpacity>
-                )
-            })
-        }
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text>Modifier le profil</Text>
+            ),
+            headerTitleAlign: 'center',
+            headerLeft: () => (
+                <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Profile" })}>
+                    <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
+            )
+        })
 
         const fetchUser = async () => {
             if (!isUserLoggedIn) return
             console.log("recuperation des données du compte....")
             const response = await axios.get(`http://10.0.2.2:3000/profile/${userId}`)
             setUser(response.data.user)
+
         }
 
         if (isUserLoggedIn) {
             fetchUser()
         }
 
+        console.log("voici les données de l'utilisateur : ", user)
+
     }, [])
+
+
 
     const handleDateChange = (text) => {
         let formattedText = text.replace(/[^0-9]/g, '')
@@ -106,8 +107,11 @@ const EditProfileScreen = ({ route, navigation }) => {
                     style: "destructive",
                     onPress: async () => {
                         try {
-                            await axios.delete(`http://10.0.2.2:3000/delete/${userId}`)
-                            console.log("Compte supprimé avec succès");
+                            console.log("id de l'utilisateur avant d'envoyer la requete", userId)
+                            const res = await axios.delete(`http://10.0.2.2:3000/delete/user/${userId}`)
+                            console.log("requête envoyé");
+                            console.log("id de l'utilisateur après la requete", userId)
+                            console.log("utilisateur trouvé dans la base de données : ", res.data.user)
                             try {
                                 await AsyncStorage.removeItem("authToken")
                                 console.log("Token supprimé avec succès");
@@ -117,9 +121,9 @@ const EditProfileScreen = ({ route, navigation }) => {
                             }
                             checkLoginStatus();
                         } catch (err) {
-                            console.log("Erreur lors de la demande de suppression", err);
+                            console.log("Erreur lors de la demande de suppression", err)
                         }
-                        navigation.navigate("Main", { screen: "Home" });
+                        navigation.navigate("Main", { screen: "Home" })
                     }
                 }
             ]

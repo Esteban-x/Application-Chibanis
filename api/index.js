@@ -127,8 +127,9 @@ app.post("/login", async (req, res) => {
             return res.status(500).json({ message: "Adresse email ou mot de passe invalide" })
         }
         const token = jwt.sign({ userId: user._id }, secretKey)
-
+        console.log("connexion réussis")
         return res.status(200).json({ token, user })
+
     }
     catch (err) {
 
@@ -310,11 +311,10 @@ app.post(`/activity/edit/:activityId`, async (req, res) => {
 })
 
 //SUPPRESSION DE L'ACTIVITE
-app.delete("/delete/:activityId", async (req, res) => {
+app.delete("/delete/activity/:activityId", async (req, res) => {
     try {
         const activityId = req.params.activityId
         const activity = await Activity.findByIdAndDelete(activityId)
-
         res.status(200).json({ message: "L'activité a bien été supprimé" })
     } catch (err) {
         console.log("erreur lors de la suppression de l'activité", err)
@@ -323,12 +323,15 @@ app.delete("/delete/:activityId", async (req, res) => {
 })
 
 //SUPPRESSION DU COMPTE
-app.delete("/delete/:userId", async (req, res) => {
+app.delete("/delete/user/:userId", async (req, res) => {
+    console.log("tentative de suppression")
     try {
+        console.log("suppression en cours")
         const userId = req.params.userId
+        console.log("id de l'utilisateur :", userId)
         const user = await User.findByIdAndDelete(userId)
 
-        res.status(200).json({ message: "L'utilisateur a bien été supprimé" })
+        res.status(200).json({ message: "L'utilisateur a bien été supprimé", user })
     } catch (err) {
         console.log("erreur lors de la suppression du compte", err)
         res.status(500).json({ message: "Erreur lors de la suppression du compte" })

@@ -60,7 +60,7 @@ const ActivityScreen = ({ navigation, route }) => {
           style: "destructive",
           onPress: async () => {
             try {
-              await axios.delete(`http://10.0.2.2:3000/delete/${activityId}`)
+              await axios.delete(`http://10.0.2.2:3000/delete/activity/${activityId}`)
               console.log("Activité supprimé avec succès");
             } catch (err) {
               console.log("Erreur lors de la demande de suppression", err);

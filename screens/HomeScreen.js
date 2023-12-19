@@ -17,10 +17,11 @@ const HomeScreen = () => {
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const [user, setUser] = useState("")
   useEffect(() => {
-    
+
     checkLoginStatus()
 
     const fetchLoggedInUser = async () => {
+      if (!isUserLoggedIn) return
       const token = await AsyncStorage.getItem("authToken")
       if (!token) return
       const base64Url = token.split('.')[1]
