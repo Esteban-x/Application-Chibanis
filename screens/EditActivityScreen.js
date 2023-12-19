@@ -14,7 +14,6 @@ const EditActivityScreen = ({ navigation, route }) => {
     const { activityId } = route.params;
 
     useEffect(() => {
-        // Votre code...
         const fetchActivity = async () => {
             axios.get(`http://10.0.2.2:3000/activity/${activityId}`)
                 .then((res) => {

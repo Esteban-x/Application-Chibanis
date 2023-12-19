@@ -76,7 +76,7 @@ const LoginScreen = () => {
           <Text style={{ textAlign: "center", fontSize: 16 }}>Vous n'avez pas de compte ? S'inscrire</Text>
         </Pressable>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </SafeAreaView >
   )
 }
 

@@ -24,7 +24,7 @@ const ProfileScreen = (route) => {
       }
     }
     fetchProfile()
-  }, [userId])
+  }, [user])
 
   const handleLogout = () => {
     clearAuthToken()

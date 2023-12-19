@@ -17,7 +17,9 @@ const HomeScreen = () => {
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const [user, setUser] = useState("")
   useEffect(() => {
+    
     checkLoginStatus()
+
     const fetchLoggedInUser = async () => {
       const token = await AsyncStorage.getItem("authToken")
       if (!token) return
@@ -52,4 +54,6 @@ const HomeScreen = () => {
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+})
