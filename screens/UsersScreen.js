@@ -47,10 +47,7 @@ const UsersScreen = ({ navigation }) => {
                     />
                     <View>
                         <Text style={{ fontSize: 15, fontWeight: "500", }}>{user.name}</Text>
-                        <Text style={{ marginTop: 5, color: "gray", fontWeight: "500", }}>{user.lastMessage}</Text>
-                    </View>
-                    <View>
-                        <Text style={{ fontSize: 11, fontWeight: "400", color: "#585858" }}>{user.lastMessageTime}</Text>
+                        <Text style={{ marginTop: 5, color: "gray", fontWeight: "500", }}>Cliquer pour chatter</Text>
                     </View>
                 </Pressable>
             ))}

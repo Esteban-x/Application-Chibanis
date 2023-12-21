@@ -57,16 +57,8 @@ const ChatScreen = ({ route, navigation }) => {
                         name: res.data.senderName,
                         avatar: 'https://placeimg.com/140/140/any',
                     },
-                };
-                setMessages(previousMessages => GiftedChat.append(previousMessages, messageFromServer));
-
-                axios.put(`http://10.0.2.2:3000/user/${userId}`, { lastMessage: res.data.content, lastMessageTime: res.data.timestamp })
-                    .then((res) => {
-                        console.log(JSON.stringify(res, null, 2))
-                        console.log(`Dernier message mis à jour ! : ${res} `)
-                    }).catch((err) => {
-                        console.error(err)
-                    })
+                }
+                setMessages(previousMessages => GiftedChat.append(previousMessages, messageFromServer))
             })
             .catch(err => console.error(err))
     }, [userId, receiverId])

@@ -53,13 +53,6 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    lastMessage: {
-        type: String,
-    },
-    lastMessageTime: {
-        type: Date,
-        default: Date.now,
-    },
     verificationToken: String
 })
 
