@@ -21,7 +21,7 @@ const ActivityScreen = ({ navigation, route }) => {
       }).catch((err) => {
         console.log("erreur lors de la recuperation des activités", err)
       })
-  }, [activities])
+  })
 
   const handleParticipate = (activity) => {
     if (activity.participants.map(participant => participant._id).includes(userId)) {
@@ -135,7 +135,7 @@ const ActivityScreen = ({ navigation, route }) => {
       </ScrollView >
       {userRole === "Admin" && (
         <TouchableOpacity style={styles.addButton} onPress={() =>
-          navigation.navigate("Main", { screen: "AddActivity" })
+          navigations.navigate("Main", { screen: "AddActivity" })
         }>
           <Text style={styles.addButtonText}>Ajouter une activité</Text>
         </TouchableOpacity>
