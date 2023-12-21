@@ -19,7 +19,7 @@ const UsersScreen = ({ navigation }) => {
             ),
             headerTitleAlign: 'center',
         })
-    }, [userId])
+    })
 
     return (
 

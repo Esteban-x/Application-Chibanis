@@ -382,3 +382,22 @@ app.get("/messages/:userId/:receiverId", (req, res) => {
         .catch(err => res.status(500).json({ message: "Erreur lors de la récuperation des messages", error: err }))
 })
 
+app.put(`/user/:userId`, async (req, res) => {
+    const { userId } = req.params
+    const { lastMessage, lastMessageTime } = req.body
+    try {
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json
+        }
+        user.lastMessage = lastMessage
+        user.lastMessageTime = lastMessageTime
+        console.log(lastMessage)
+        await user.save()
+        res.status(200).json({ message: "le dernier message a bien été enregistré" })
+        console.log("le dernier message a bien été enregistré")
+    } catch (err) {
+        console.log(err)
+        res.status(300).json({ message: "Erreur du serveur" })
+    }
+})

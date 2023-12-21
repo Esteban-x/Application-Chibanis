@@ -22,7 +22,7 @@ const messageSchema = mongoose.Schema({
     senderName: {
         type: String,
         required: true,
-    }
+    },
 })
 
 const Message = mongoose.model("Message", messageSchema)
