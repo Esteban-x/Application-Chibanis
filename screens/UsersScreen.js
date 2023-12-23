@@ -46,7 +46,7 @@ const UsersScreen = ({ navigation }) => {
                         source={{ uri: user.avatarUrl || "https://media.istockphoto.com/vectors/default-avatar-photo-placeholder-profile-icon-vector-id1313110704?k=20&m=1313110704&s=170667a&w=0&h=gE703WhYCETVYgDzUwElRoF6MbKffCcfzLpQVByIqdk=" }}
                     />
                     <View>
-                        <Text style={{ fontSize: 15, fontWeight: "500", }}>{user.name}</Text>
+                        <Text style={{ fontSize: 15, fontWeight: "500", }}>{user.firstname}</Text>
                         <Text style={{ marginTop: 5, color: "gray", fontWeight: "500", }}>Cliquer pour chatter</Text>
                     </View>
                 </Pressable>
