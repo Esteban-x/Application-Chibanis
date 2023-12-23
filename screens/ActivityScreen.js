@@ -108,7 +108,8 @@ const ActivityScreen = ({ navigation, route }) => {
                   onPress={() => navigations.navigate("Main", { screen: "Planning" })}
                   style={{
                     alignSelf: 'center', flexDirection: "row", backgroundColor: "white", padding: 5, borderRadius: 6, borderWidth: 0.5,
-                    borderColor: "#9D9C9C", }}
+                    borderColor: "#9D9C9C",
+                  }}
                 >
                   <Ionicons name="calendar-outline" size={24} color="black" />
                   <Text style={{ margin: 4, color: "black" }}>Consulter le planning</Text>
@@ -195,9 +196,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: "center",
   },
   content: {
     marginTop: 10,
+    textAlign: "center",
   },
   image: {
     width: '100%',
