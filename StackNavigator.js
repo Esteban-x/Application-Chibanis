@@ -34,7 +34,7 @@ const StackNavigator = () => {
     return (
       <Tab.Navigator initialRouteName='Home'>
         <Tab.Screen name="Home" component={HomeScreen} options={{
-          tabBarLabel: "Accueil", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+          tabBarLabel: "Accueil", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
             (<Ionicons name="home" size={24} color="black" />) : (<Ionicons name="home" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Missions" component={MissionScreen} options={{

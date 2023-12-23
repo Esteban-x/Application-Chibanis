@@ -1,18 +1,33 @@
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
+import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 
-const AddActivityScreen = () => {
-    const navigation = useNavigation()
+const AddActivityScreen = ({ navigation }) => {
+    const navigations = useNavigation()
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [title, setTitle] = useState('')
     const [date, setDate] = useState(new Date())
     const [image, setImage] = useState('')
     const [content, setContent] = useState('')
     const { userId } = useContext(UserType)
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text>Ajouter une activité</Text>
+            ),
+            headerTitleAlign: 'center',
+            headerLeft: () => (
+                <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigations.navigate("Main", { screen: "Activity" })}>
+                    <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
+            )
+        })
+    }, [])
 
     const handleSubmit = async () => {
         const activity = { title: title, date: date, image: image, content: content, userId: userId }
@@ -22,7 +37,7 @@ const AddActivityScreen = () => {
         }
         axios.post("http://10.0.2.2:3000/create-activity", activity)
             .then((response) => {
-                navigation.navigate("Main", { screen: "Activity" })
+                navigations.navigate("Main", { screen: "Activity" })
             }).catch((error) => {
                 console.error("erreur lors de la publication", error)
             })

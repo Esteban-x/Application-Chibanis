@@ -1,0 +1,6 @@
+bleu : #1A9BD8
+bleu clair : #EAF6FE
+vert : #677A63
+vert clair : #E9F2E1
+rouge : #DF5C40
+gris : 9D9C9C
