@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable, Alert, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TextInput, Pressable, Alert, ScrollView, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { Octicons } from '@expo/vector-icons'
 import axios from 'axios'
+import * as Font from 'expo-font';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("")
@@ -23,7 +24,35 @@ const RegisterScreen = () => {
   const [city, setCity] = useState("")
   const [role, setRole] = useState("")
   const [phone, setPhone] = useState("")
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const navigation = useNavigation()
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <Text></Text>
+      ),
+      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <TouchableOpacity style={{ marginLeft: 13, marginTop: 5 }} onPress={() => navigation.navigate("Main", { screen: "Login" })}>
+          <Ionicons name="arrow-back" size={30} color="black" />
+        </TouchableOpacity>
+      )
+    })
+
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Mulish-ExtraBold': require('../assets/fonts/Mulish-ExtraBold.ttf'),
+        'Mulish': require('../assets/fonts/Mulish-Regular.ttf'),
+        'Mulish-Bold': require('../assets/fonts/Mulish-Bold.ttf'),
+        'Ostrich': require('../assets/fonts/OstrichSans-Heavy.otf'),
+        'Neucha': require('../assets/fonts/Neucha-Regular.ttf'),
+      });
+      setFontsLoaded(true);
+    }
+
+    loadFonts();
+  }, [])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -145,14 +174,21 @@ const RegisterScreen = () => {
     }
   }
 
+  if (!fontsLoaded) {
+    return
+  }
+
   return (
     <ScrollView >
       <SafeAreaView style={{ paddingVertical: 20, flex: 1, backgroundColor: "white", alignItems: "center", }}>
+        <Image style={{ width: 150, height: 100, resizeMode: "contain", marginBottom: 15 }}
+          source={require("../assets/img/logo.png")}
+        />
         <KeyboardAvoidingView>
           <View style={{ alignItems: "center", justifyContent: "center", }}>
-            <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 25 }}>Inscrivez-vous</Text>
+            <Text style={{ fontSize: 32, fontFamily: "Ostrich", marginTop: 25 }}>Inscrivez-vous</Text>
           </View>
-          <View style={{ marginTop: 40 }}>
+          <View style={{ marginTop: 30 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
               <Ionicons name="person" size={24} style={{ paddingLeft: 5 }} color="black" />
               <TextInput value={name} onChangeText={setName} maxLength={20} style={{ paddingHorizontal: 10, width: 300, fontSize: name ? 16 : 16 }} placeholder="saisissez votre nom" />
@@ -222,11 +258,22 @@ const RegisterScreen = () => {
             </View>
           </View>
           <View style={{ marginTop: -10 }} />
-          <Pressable onPress={handleRegister} style={{ width: 200, backgroundColor: "black", padding: 15, marginTop: 40, marginLeft: "auto", marginRight: "auto", borderRadius: 6 }}>
-            <Text style={{ color: "white", textAlign: "center", fontWeight: "bold", fontSize: 16 }}>S'inscrire</Text>
+          <Pressable
+            onPress={handleRegister}
+            style={({ pressed }) => ({
+              width: 200,
+              backgroundColor: pressed ? '#1A9BD8' : 'black',
+              padding: 15,
+              marginTop: 40,
+              marginLeft: "auto",
+              marginRight: "auto",
+              borderRadius: 6
+            })}
+          >
+            <Text style={{ color: "white", textAlign: "center", fontSize: 17, fontFamily: "Mulish-Bold" }}>S'inscrire</Text>
           </Pressable>
-          <Pressable onPress={() => navigation.navigate("Main", { screen: "Login" })} style={{ marginTop: 10 }}>
-            <Text style={{ textAlign: "center", fontSize: 16 }}>Vous avez déja un compte ? Se connecter</Text>
+          <Pressable onPress={() => navigation.navigate("Main", { screen: "Login" })} style={{ marginTop: 13 }}>
+            <Text style={{ textAlign: "center", fontSize: 16, fontFamily: "Mulish-Bold" }}>Vous avez déja un compte ?  <Text style={{ color: "#1A9BD8" }}>Se connecter</Text> </Text>
           </Pressable>
         </KeyboardAvoidingView>
       </SafeAreaView>

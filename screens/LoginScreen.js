@@ -82,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
         <View style={{ alignItems: "center", justifyContent: "center", }}>
           <Text style={{ fontSize: 32, marginTop: 25, fontFamily: "Ostrich" }}>Connectez-vous</Text>
         </View>
-        <View style={{ marginTop: 40 }}>
+        <View style={{ marginTop: 35 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
             <MaterialIcons name="email" size={24} color="black" style={{ paddingLeft: 5 }} />
             <TextInput value={email} onChangeText={setEmail} style={{ paddingHorizontal: 10, width: 300, fontSize: email ? 16 : 16 }} placeholder="entrez votre Email" />
@@ -95,10 +95,21 @@ const LoginScreen = ({ navigation }) => {
           </View>
         </View>
         <View style={{ marginTop: -19 }} />
-        <Pressable onPress={handleLogin} style={{ width: 200, backgroundColor: "black", padding: 15, marginTop: 40, marginLeft: "auto", marginRight: "auto", borderRadius: 6 }}>
+        <Pressable
+          onPress={handleLogin}
+          style={({ pressed }) => ({
+            width: 200,
+            backgroundColor: pressed ? '#1A9BD8' : 'black',
+            padding: 15,
+            marginTop: 40,
+            marginLeft: "auto",
+            marginRight: "auto",
+            borderRadius: 6
+          })}
+        >
           <Text style={{ color: "white", textAlign: "center", fontSize: 17, fontFamily: "Mulish-Bold" }}>Connexion</Text>
         </Pressable>
-        <Pressable onPress={() => navigations.navigate("Main", { screen: "Register" })} style={{ marginTop: 10 }}>
+        <Pressable onPress={() => navigations.navigate("Main", { screen: "Register" })} style={{ marginTop: 13 }}>
           <Text style={{ textAlign: "center", fontSize: 16, fontFamily: "Mulish-Bold" }}>Vous n'avez pas de compte ?  <Text style={{ color: "#1A9BD8" }}>S'inscrire</Text> </Text>
         </Pressable>
       </KeyboardAvoidingView>
