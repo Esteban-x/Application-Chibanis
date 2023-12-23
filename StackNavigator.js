@@ -42,7 +42,7 @@ const StackNavigator = () => {
             (<Ionicons name="md-create-outline" size={24} color="black" />) : (<Ionicons name="md-create-outline" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Activity" component={ActivityScreen} options={{
-          tabBarLabel: "Activités", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+          tabBarLabel: "Activités", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
             (<Ionicons name="calendar" size={24} color="black" />) : (<Ionicons name="calendar-outline" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Contact" component={ContactScreen} options={{

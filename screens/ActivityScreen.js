@@ -2,9 +2,11 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image, But
 import React, { useEffect, useState, useContext } from 'react'
 import { UserContext, UserType } from '../UserContext'
 import { AuthContext } from '../AuthContext'
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import { Header } from '@react-navigation/elements';
 import axios from 'axios'
+import * as Font from 'expo-font';
 
 const ActivityScreen = ({ navigation, route }) => {
   const { userId, userRole } = useContext(UserType)
@@ -12,6 +14,7 @@ const ActivityScreen = ({ navigation, route }) => {
   const [activityId, setActivityId] = useState("")
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const navigations = useNavigation()
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
     checkLoginStatus()
@@ -21,6 +24,23 @@ const ActivityScreen = ({ navigation, route }) => {
       }).catch((err) => {
         console.log("erreur lors de la recuperation des activités", err)
       })
+    navigation.setOptions({
+      headerTitle: () => (
+        <Text>Activités</Text>
+      ),
+      headerTitleAlign: 'center',
+    })
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Mulish-ExtraBold': require('../assets/fonts/Mulish-ExtraBold.ttf'),
+        'Mulish': require('../assets/fonts/Mulish-Regular.ttf'),
+        'Mulish-Bold': require('../assets/fonts/Mulish-Bold.ttf'),
+        'Ostrich': require('../assets/fonts/OstrichSans-Heavy.otf'),
+        'Neucha': require('../assets/fonts/Neucha-Regular.ttf'),
+      });
+      setFontsLoaded(true);
+    }
+    loadFonts();
   })
 
   const handleParticipate = (activity) => {
@@ -71,18 +91,33 @@ const ActivityScreen = ({ navigation, route }) => {
     )
   }
 
+  if (!fontsLoaded) {
+    return
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <Header
-          title="Activités"
-          headerRight={() => (
-            userRole === "Admin" && (<Button
-              title="Planning"
-              onPress={() => navigations.navigate("Main", { screen: "Planning" })}
-            />)
+          title=""
+          headerTitle={() => (
+            userRole === "Admin" && (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity
+                  title="Planning"
+                  onPress={() => navigations.navigate("Main", { screen: "Planning" })}
+                  style={{
+                    alignSelf: 'center', flexDirection: "row", backgroundColor: "white", padding: 5, borderRadius: 6, borderWidth: 0.5,
+                    borderColor: "#9D9C9C", }}
+                >
+                  <Ionicons name="calendar-outline" size={24} color="black" />
+                  <Text style={{ margin: 4, color: "black" }}>Consulter le planning</Text>
+                </TouchableOpacity>
+              </View>
+            )
           )}
         />
+
         <View>
           {Array.isArray(activities) && activities.map((activity, index) => (
             <View key={index} style={styles.activityCard}>
@@ -101,7 +136,7 @@ const ActivityScreen = ({ navigation, route }) => {
                 <TouchableOpacity style={{
                   marginTop: 10,
                   padding: 10,
-                  backgroundColor: 'green',
+                  backgroundColor: '#677A63',
                   borderRadius: 5,
 
                   width: "30%",
@@ -116,7 +151,7 @@ const ActivityScreen = ({ navigation, route }) => {
                 <TouchableOpacity style={{
                   marginTop: 10,
                   padding: 10,
-                  backgroundColor: 'red',
+                  backgroundColor: '#DF5C40',
                   borderRadius: 5,
 
                   width: "30%",
@@ -175,18 +210,20 @@ const styles = StyleSheet.create({
     right: 20,
     bottom: 20,
     padding: 10,
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     borderRadius: 50,
     zIndex: 1,
+    borderWidth: 0.5,
+    borderColor: "#9D9C9C",
   },
   addButtonText: {
-    color: 'white',
+    color: 'black',
     fontSize: 18,
   },
   participateButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: 'blue',
+    backgroundColor: "#1A9BD8",
     borderRadius: 5,
     color: "white",
     width: "30%",
