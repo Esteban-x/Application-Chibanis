@@ -65,7 +65,7 @@ const StackNavigator = () => {
           <Tab.Screen name="Message" component={ChatScreen} options={{ tabBarButton: () => null }} />
         )}
         <Tab.Screen name={isUserLoggedIn ? "Profile" : "Login"} component={isUserLoggedIn ? ProfileScreen : LoginScreen} options={{
-          tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+          tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
             (<Ionicons name="person-circle-outline" size={24} color="black" />) : (<Ionicons name="person-circle-outline" size={24} color="gray" />)
         }} />
         {isUserLoggedIn && (

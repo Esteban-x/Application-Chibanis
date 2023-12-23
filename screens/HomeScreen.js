@@ -7,7 +7,6 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import axios from 'axios'
 import { AuthContext } from '../AuthContext'
 
