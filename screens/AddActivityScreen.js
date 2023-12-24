@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'rea
 import React, { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
@@ -45,31 +46,46 @@ const AddActivityScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>Titre:</Text>
-            <TextInput style={styles.input} value={title} onChangeText={setTitle} />
+            <View style={{ alignItems: "center", marginTop: 30 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", }}>
+                    <AntDesign name="addfile" size={84} color="#1A9BD8" />
+                    <Text style={{ fontSize: 50, marginTop: 25 }}>Activité</Text>
+                </View>
+            </View>
+            <View style={{ marginTop: 10 }}>
+                <Text style={styles.label}>Titre</Text>
+                <TextInput style={styles.input} value={title} onChangeText={setTitle} />
 
-            <TouchableOpacity style={styles.dateInput} onPress={() => setShowDatePicker(true)}>
-                <Text style={styles.label}>Date: {date.toLocaleDateString()}</Text>
-            </TouchableOpacity>
-            {showDatePicker && (
-                <DateTimePicker
-                    value={date}
-                    mode="date"
-                    display="default"
-                    onChange={(event, selectedDate) => {
-                        setShowDatePicker(false)
-                        setDate(selectedDate || date)
-                    }}
-                />
-            )}
+                <Text style={styles.label}>Choisir une date</Text>
+                <TouchableOpacity style={styles.dateInput} onPress={() => setShowDatePicker(true)}>
+                    <Text style={{}}>{date.toLocaleDateString()}</Text>
+                </TouchableOpacity>
+                {showDatePicker && (
+                    <DateTimePicker
+                        value={date}
+                        mode="date"
+                        display="default"
+                        onChange={(event, selectedDate) => {
+                            setShowDatePicker(false)
+                            setDate(selectedDate || date)
+                        }}
+                    />
+                )}
 
-            <Text style={styles.label}>Image:</Text>
-            <TextInput style={styles.input} value={image} onChangeText={setImage} />
+                <Text style={styles.label}>Liens vers l'image (url)</Text>
+                <TextInput style={styles.input} value={image} onChangeText={setImage} />
 
-            <Text style={styles.label}>Contenu:</Text>
-            <TextInput style={styles.input} value={content} onChangeText={setContent} multiline />
-            <View style={styles.buttonContainer}>
-                <Button title="Publier" onPress={handleSubmit} />
+                <Text style={styles.label}>Description</Text>
+                <TextInput style={{
+                    borderWidth: 1,
+                    borderColor: '#ddd',
+                    borderRadius: 5,
+                    padding: 25,
+                    fontSize: 16,
+                }} value={content} onChangeText={setContent} multiline />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={{ backgroundColor: "#1A9BD8", borderRadius: 6, padding: 10 }} onPress={handleSubmit} ><Text style={{ color: "white", textAlign: "center", fontSize: 18 }}>Publier</Text></TouchableOpacity>
+                </View>
             </View>
         </View>
     )
@@ -80,29 +96,29 @@ export default AddActivityScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        paddingHorizontal: 27,
+        paddingVertical: 10,
         backgroundColor: '#fff',
     },
     label: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: 'medium',
         marginTop: 20,
     },
     input: {
         borderWidth: 1,
         borderColor: '#ddd',
         borderRadius: 5,
-        padding: 10,
+        padding: 5,
         fontSize: 16,
     },
     buttonContainer: {
-        marginTop: 20, // Ajoutez un espace en haut du bouton
+        marginTop: 30,
     },
     dateInput: {
         borderWidth: 1,
         borderColor: '#ddd',
         borderRadius: 5,
         padding: 10,
-        marginTop: 20,
     },
 })
