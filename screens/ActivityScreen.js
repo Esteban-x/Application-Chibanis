@@ -3,8 +3,10 @@ import React, { useEffect, useState, useContext } from 'react'
 import { UserContext, UserType } from '../UserContext'
 import { AuthContext } from '../AuthContext'
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import { Header } from '@react-navigation/elements';
+import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios'
 import * as Font from 'expo-font';
 
@@ -41,7 +43,7 @@ const ActivityScreen = ({ navigation, route }) => {
       setFontsLoaded(true);
     }
     loadFonts();
-  })
+  }, [activities])
 
   const handleParticipate = (activity) => {
     if (activity.participants.map(participant => participant._id).includes(userId)) {
@@ -102,7 +104,7 @@ const ActivityScreen = ({ navigation, route }) => {
           title=""
           headerTitle={() => (
             userRole === "Admin" && (
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
                 <TouchableOpacity
                   title="Planning"
                   onPress={() => navigations.navigate("Main", { screen: "Planning" })}
@@ -111,8 +113,21 @@ const ActivityScreen = ({ navigation, route }) => {
                     borderColor: "#9D9C9C",
                   }}
                 >
-                  <Ionicons name="calendar-outline" size={24} color="black" />
+                  <Ionicons name="calendar-outline" size={24} color="#DF5C40" />
                   <Text style={{ margin: 4, color: "black" }}>Consulter le planning</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  title="Planning"
+                  onPress={() =>
+                    navigations.navigate("Main", { screen: "AddActivity" })
+                  }
+                  style={{
+                    alignSelf: 'center', flexDirection: "row", backgroundColor: "white", padding: 5, borderRadius: 6, borderWidth: 0.5,
+                    borderColor: "#9D9C9C", marginLeft: 15,
+                  }}
+                >
+                  <AntDesign name="addfile" size={24} color="#1A9BD8" />
+                  <Text style={{ margin: 4, color: "black" }}>Ajouter une activité</Text>
                 </TouchableOpacity>
               </View>
             )
@@ -123,59 +138,55 @@ const ActivityScreen = ({ navigation, route }) => {
           {Array.isArray(activities) && activities.map((activity, index) => (
             <View key={index} style={styles.activityCard}>
               <Text style={styles.title}> {activity.title}</Text>
+              <Image style={{ marginTop: 10, width: 350, height: 200 }} source={{ uri: activity.image }} resizeMode="cover" />
               <Text style={styles.content}>{activity.content}</Text>
-              <Text style={styles.content}> {activity.image}</Text>
-              <Text style={styles.content}> Date : {activity.date}</Text>
-              {isUserLoggedIn && activity && (
-                <TouchableOpacity style={styles.participateButton} onPress={() => handleParticipate(activity)}>
-                  <Text style={styles.participateButtonText}>
-                    {activity.participants && activity.participants.map(participant => participant._id).includes(userId) ? "Ne plus participer" : "Participer"}
-                  </Text>
-                </TouchableOpacity>
-              )}
-              {userRole === "Admin" && (
-                <TouchableOpacity style={{
-                  marginTop: 10,
-                  padding: 10,
-                  backgroundColor: '#677A63',
-                  borderRadius: 5,
-
-                  width: "30%",
-                }}
-                  onPress={() => {
-                    navigation.navigate("Main", { screen: "EditActivity", params: { activityId: activity._id } })
-                  }}>
-                  <Text style={{ color: "white", textAlign: "center", }}>Modifier</Text>
-                </TouchableOpacity>
-              )}
-              {userRole === "Admin" && (
-                <TouchableOpacity style={{
-                  marginTop: 10,
-                  padding: 10,
-                  backgroundColor: '#DF5C40',
-                  borderRadius: 5,
-
-                  width: "30%",
-                }}
-                  onPress={() => {
-                    handleDeleteActivity(activity._id)
+              <Text style={{ textAlign: "center", marginTop: 10 }}> Date : {activity.date}</Text>
+              <View style={{ alignItems: "start", padding: 10, justifyContent: "center", flexDirection: "row" }}>
+                {isUserLoggedIn && activity && (
+                  <TouchableOpacity style={styles.participateButton} onPress={() => handleParticipate(activity)}>
+                    <Text style={styles.participateButtonText}>
+                      {activity.participants && activity.participants.map(participant => participant._id).includes(userId) ? "Ne plus participer" : "Participer"}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {userRole === "Admin" && (
+                  <TouchableOpacity style={{
+                    marginTop: 10,
+                    padding: 10,
+                    backgroundColor: '#677A63',
+                    borderRadius: 5,
+                    marginHorizontal: 5,
+                    justifyContent: "center",
+                    width: "35%",
                   }}
-                >
-                  <Text style={{ color: "white", textAlign: "center", }}>Supprimer</Text>
-                </TouchableOpacity>
-              )}
+                    onPress={() => {
+                      navigation.navigate("Main", { screen: "EditActivity", params: { activityId: activity._id } })
+                    }}>
+                    <Text style={{ color: "white", textAlign: "center", }}><FontAwesome5 name="edit" size={24} color="white" /> Modifier</Text>
+                  </TouchableOpacity>
+                )}
+                {userRole === "Admin" && (
+                  <TouchableOpacity style={{
+                    marginTop: 10,
+                    padding: 10,
+                    backgroundColor: '#DF5C40',
+                    borderRadius: 5,
+                    justifyContent: "center",
+                    width: "35%",
+                  }}
+                    onPress={() => {
+                      handleDeleteActivity(activity._id)
+                    }}
+                  >
+                    <Text style={{ color: "white", textAlign: "center", }}><Ionicons name="md-trash-outline" size={25} color="white" /> Supprimer</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           ))}
 
         </View>
       </ScrollView >
-      {userRole === "Admin" && (
-        <TouchableOpacity style={styles.addButton} onPress={() =>
-          navigations.navigate("Main", { screen: "AddActivity" })
-        }>
-          <Text style={styles.addButtonText}>Ajouter une activité</Text>
-        </TouchableOpacity>
-      )}
     </View >
   )
 }
@@ -194,13 +205,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 28,
     textAlign: "center",
+    fontFamily: "Ostrich",
   },
   content: {
-    marginTop: 10,
-    textAlign: "center",
+    textAlign: "justify",
+    padding: 10,
   },
   image: {
     width: '100%',
@@ -208,28 +219,13 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     marginTop: 10,
   },
-  addButton: {
-    position: 'absolute',
-    right: 20,
-    bottom: 20,
-    padding: 10,
-    backgroundColor: 'white',
-    borderRadius: 50,
-    zIndex: 1,
-    borderWidth: 0.5,
-    borderColor: "#9D9C9C",
-  },
-  addButtonText: {
-    color: 'black',
-    fontSize: 18,
-  },
   participateButton: {
     marginTop: 10,
     padding: 10,
     backgroundColor: "#1A9BD8",
     borderRadius: 5,
     color: "white",
-    width: "30%",
+    width: "35%",
   },
   participateButtonText: {
     color: '#fff',
