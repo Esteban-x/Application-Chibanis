@@ -152,33 +152,33 @@ const ActivityScreen = ({ navigation, route }) => {
                 {userRole === "Admin" && (
                   <TouchableOpacity style={{
                     marginTop: 10,
-                    padding: 10,
+                    padding: 5,
                     backgroundColor: '#677A63',
                     borderRadius: 5,
                     marginHorizontal: 5,
                     justifyContent: "center",
-                    width: "35%",
+                    width: "30%",
                   }}
                     onPress={() => {
                       navigation.navigate("Main", { screen: "EditActivity", params: { activityId: activity._id } })
                     }}>
-                    <Text style={{ color: "white", textAlign: "center", }}><FontAwesome5 name="edit" size={24} color="white" /> Modifier</Text>
+                    <Text style={{ color: "white", textAlign: "center", fontSize: 13, marginTop: 3 }}><FontAwesome5 name="edit" size={17} color="white" /> Modifier</Text>
                   </TouchableOpacity>
                 )}
                 {userRole === "Admin" && (
                   <TouchableOpacity style={{
                     marginTop: 10,
-                    padding: 10,
+                    padding: 5,
                     backgroundColor: '#DF5C40',
                     borderRadius: 5,
                     justifyContent: "center",
-                    width: "35%",
+                    width: "30%",
                   }}
                     onPress={() => {
                       handleDeleteActivity(activity._id)
                     }}
                   >
-                    <Text style={{ color: "white", textAlign: "center", }}><Ionicons name="md-trash-outline" size={25} color="white" /> Supprimer</Text>
+                    <Text style={{ color: "white", textAlign: "center", fontSize: 13, }}><Ionicons name="md-trash-outline" size={20} color="white" /> Supprimer</Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -225,11 +225,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#1A9BD8",
     borderRadius: 5,
     color: "white",
-    width: "35%",
+    width: "30%",
   },
   participateButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 13,
     textAlign: 'center',
   },
 
