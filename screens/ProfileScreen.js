@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { UserType } from '../UserContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../AuthContext'
+import { Ionicons } from '@expo/vector-icons';
+
 
 const ProfileScreen = (route) => {
   const navigation = useNavigation()
@@ -13,6 +15,12 @@ const ProfileScreen = (route) => {
   const { checkLoginStatus, isUserLoggedIn } = useContext(AuthContext)
 
   useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <Text>Mon compte</Text>
+      ),
+      headerTitleAlign: 'center',
+    })
     checkLoginStatus()
     const fetchProfile = async () => {
       if (!userId || !isUserLoggedIn) return
@@ -43,31 +51,33 @@ const ProfileScreen = (route) => {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.profileHeader}>
-        <Image style={styles.avatar} source={{ uri: "http://cdn-icons-png.flaticon.com/128/149/149071.png" }} />
-        <Text style={styles.profileName}>{user?.firstname} {user?.name}</Text>
-      </View>
-      <View style={styles.profileInfo}>
-        <Text style={styles.infoTitle}>Infos du compte</Text>
-        <Text style={styles.infoItem}>Nom : {user?.name}</Text>
-        <Text style={styles.infoItem}>Prénom: {user?.firstname}</Text>
-        <Text style={styles.infoItem}>Email : {user?.email}</Text>
-        <Text style={styles.infoItem}>Téléphone: {user?.phone}</Text>
-        <Text style={styles.infoItem}>Addresse : {user?.address}</Text>
-        <Text style={styles.infoItem}>Ville : {user?.city}</Text>
-        <Text style={styles.infoItem}>Age :  {user?.age}</Text>
-        <Text style={styles.infoItem}>Date de naissance :  {user?.birthday}</Text>
-        <Text style={styles.infoItem}>Mot de passe :  {user?.password}</Text>
-        <Text style={styles.infoItem}>Inscrit le : {user?.joinDate} </Text>
-        <Text style={styles.infoItem}>Role : {user?.role === "User" ? ("Adhérent") : ('Administrateur')} </Text>
-      </View>
-      <View style={styles.profileActions}>
-        <Pressable onPress={() => navigation.navigate("Main", { screen: "EditProfile", params: { user: user } })} style={styles.actionButton}>
-          <Text style={styles.actionText}>Modifier mon profil</Text>
-        </Pressable>
-        <Pressable onPress={handleLogout} style={styles.actionButton}>
-          <Text style={styles.actionText}>Déconnexion</Text>
-        </Pressable>
+      <View style={styles.profileCard}>
+        <View style={styles.profileHeader}>
+          <Image style={styles.avatar} source={{ uri: "http://cdn-icons-png.flaticon.com/128/149/149071.png" }} />
+          <Text style={styles.profileName}>{user?.firstname} {user?.name}</Text>
+        </View>
+        <View style={styles.profileInfo}>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Nom :</Text> {user?.name}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Prénom:</Text> {user?.firstname}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Email :</Text> {user?.email}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Téléphone:</Text> {user?.phone}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Addresse :</Text> {user?.address}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Ville :</Text> {user?.city}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Age :</Text> {user?.age}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Date de naissance :</Text> {user?.birthday}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Mot de passe :</Text> {user?.password}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Inscrit le :</Text> {user?.joinDate}</Text>
+          <Text style={styles.infoItem}><Text style={{ fontWeight: 'bold' }}>Role :</Text> {user?.role === "User" ? ("Adhérent") : ('Administrateur')}</Text>
+        </View>
+
+        <View style={styles.profileActions}>
+          <Pressable onPress={() => navigation.navigate("Main", { screen: "EditProfile", params: { user: user } })} style={styles.modifyButton}>
+            <Text style={styles.actionText}>Modifier mon profil</Text>
+          </Pressable>
+          <Pressable onPress={handleLogout} style={styles.deleteButton}>
+            <Text style={styles.actionText}>Déconnexion</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   )
@@ -79,8 +89,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#f5f5f5',
-    marginTop: "10%",
+    backgroundColor: '#F3F3F3',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileCard: {
+    width: '90%',
+    backgroundColor: 'white',
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   profileHeader: {
     flexDirection: 'row',
@@ -96,34 +118,37 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: 'black',
   },
   profileInfo: {
     marginBottom: 20,
   },
-  infoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
   infoItem: {
     fontSize: 16,
-    marginBottom: 5,
+    color: '#9D9C9C',
+    color: "black"
   },
   profileActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  actionButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  modifyButton: {
     padding: 10,
-    borderColor: '#D0D0D0',
-    borderWidth: 1,
     borderRadius: 5,
-    marginHorizontal: 5,
+    backgroundColor: '#1A9BD8',
+    width: '45%',
+    justifyContent: "center",
+  },
+  deleteButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: '#DF5C40',
+    width: '45%',
+    justifyContent: "center",
   },
   actionText: {
     fontSize: 16,
+    color: 'white',
+    textAlign: 'center',
   },
-})
+});
