@@ -40,7 +40,7 @@ const StackNavigator = () => {
             (<Ionicons name="home" size={24} color="#1A9BD8" />) : (<Ionicons name="home" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Missions" component={MissionScreen} options={{
-          tabBarLabel: "Missions", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
+          tabBarLabel: "Missions", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
             (<Fontisto name="wallet" size={24} color="#677A63" />) : (<Fontisto name="wallet" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Activity" component={ActivityScreen} options={{
