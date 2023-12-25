@@ -60,7 +60,7 @@ const MissionScreen = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.card}>
           <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-            <AntDesign name="smile-circle" size={40} color="#35363A" style={{ marginBottom: 10, marginRight: 10 }} /><Text style={styles.cardTitle}>Bien vieillir</Text>
+            <AntDesign name="smile-circle" size={40} color="#1A9BD8" style={{ marginBottom: 10, marginRight: 10 }} /><Text style={styles.cardTitle}>Bien vieillir</Text>
           </View>
           <Image style={styles.cardImage} source={(require("../assets/img/chibani-3.png"))} resizeMode="contain" />
 
@@ -68,14 +68,14 @@ const MissionScreen = () => {
         </View>
         <View style={styles.card}>
           <View style={{ flexDirection: "row", justifyContent: "center", marginRight: 20 }}>
-            <Ionicons name="ios-walk-outline" size={54} color="#35363A" style={{ marginBottom: 16, marginRight: 2 }} /><Text style={styles.cardTitle}>Mobilité</Text>
+            <Ionicons name="ios-walk-outline" size={54} color="#1A9BD8" style={{ marginBottom: 16, marginRight: 2 }} /><Text style={styles.cardTitle}>Mobilité</Text>
           </View>
           <Image style={styles.cardImage} source={(require("../assets/img/chibani-2.png"))} />
           <Text style={styles.cardDescription}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae nisi impedit laboriosam enim. Odio fuga ratione aliquam quae distinctio, explicabo ut iusto ab hic quaerat optio totam facere amet odit? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam a maxime sit tempora aut quos quam? Modi id commodi eaque alias quibusdam natus itaque fugiat, rem ea sit, quaerat a!</Text>
         </View>
         <View style={styles.card}>
           <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-            <Octicons name="law" size={43} color="#35363A" style={{ marginBottom: 10, marginRight: 10 }} /><Text style={styles.cardTitle}>Bien vieillir</Text>
+            <Octicons name="law" size={43} color="#1A9BD8" style={{ marginBottom: 10, marginRight: 10 }} /><Text style={styles.cardTitle}>Bien vieillir</Text>
           </View>
           <Image style={styles.cardImage} source={(require("../assets/img/chibani-1.png"))} />
           <Text style={styles.cardDescription}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae nisi impedit laboriosam enim. Odio fuga ratione aliquam quae distinctio, explicabo ut iusto ab hic quaerat optio totam facere amet odit? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam a maxime sit tempora aut quos quam? Modi id commodi eaque alias quibusdam natus itaque fugiat, rem ea sit, quaerat a!
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 40,
-    color: '#1A9BD8',
+    color: '#35363A',
     marginBottom: 10,
     padding: 10,
     fontFamily: "Ostrich",

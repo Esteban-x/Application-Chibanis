@@ -64,7 +64,7 @@ const StackNavigator = () => {
           <Tab.Screen name="Planning" component={PlanningScreen} options={{ tabBarButton: () => null, tabBarStyle: { display: "none" } }} />
         )}
         {isUserLoggedIn && (
-          <Tab.Screen name="Message" component={ChatScreen} options={{ tabBarButton: () => null }} />
+          <Tab.Screen name="Message" component={ChatScreen} options={{ tabBarButton: () => null, tabBarStyle: { display: "none" } }} />
         )}
         <Tab.Screen name={isUserLoggedIn ? "Profile" : "Login"} component={isUserLoggedIn ? ProfileScreen : LoginScreen} options={{
           tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
