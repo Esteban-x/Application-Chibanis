@@ -41,20 +41,20 @@ const StackNavigator = () => {
         }} />
         <Tab.Screen name="Missions" component={MissionScreen} options={{
           tabBarLabel: "Missions", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
-            (<Fontisto name="wallet" size={24} color="#677A63" />) : (<Fontisto name="wallet" size={24} color="gray" />)
+            (<Fontisto name="wallet" size={24} color="#1A9BD8" />) : (<Fontisto name="wallet" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Activity" component={ActivityScreen} options={{
           tabBarLabel: "Activités", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
-            (<Ionicons name="calendar" size={24} color="#DF5C40" />) : (<Ionicons name="calendar-outline" size={24} color="gray" />)
+            (<Ionicons name="calendar" size={24} color="#1A9BD8" />) : (<Ionicons name="calendar-outline" size={24} color="gray" />)
         }} />
         <Tab.Screen name="Contact" component={ContactScreen} options={{
           tabBarLabel: "Contacts", tabBarLabelStyle: { color: "black" }, headerShown: false, tabBarIcon: ({ focused }) => focused ?
-            (<MaterialCommunityIcons name="contacts" size={24} color="#257CDF" />) : (<MaterialCommunityIcons name="contacts-outline" size={24} color="gray" />)
+            (<MaterialCommunityIcons name="contacts" size={24} color="#1A9BD8" />) : (<MaterialCommunityIcons name="contacts-outline" size={24} color="gray" />)
         }} />
         {isUserLoggedIn && (
           <Tab.Screen name="Chat" component={UsersScreen} options={{
             tabBarLabel: "Chat", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
-              (<Ionicons name="chatbox-ellipses" size={24} color="#80DEA1" />) : (<Ionicons name="chatbox-ellipses-outline" size={24} color="gray" />)
+              (<Ionicons name="chatbox-ellipses" size={24} color="#1A9BD8" />) : (<Ionicons name="chatbox-ellipses-outline" size={24} color="gray" />)
           }} />
         )}
         {isUserLoggedIn && (
@@ -68,7 +68,7 @@ const StackNavigator = () => {
         )}
         <Tab.Screen name={isUserLoggedIn ? "Profile" : "Login"} component={isUserLoggedIn ? ProfileScreen : LoginScreen} options={{
           tabBarLabel: isUserLoggedIn ? "Compte" : "Connexion", tabBarLabelStyle: { color: "black" }, headerShown: true, tabBarIcon: ({ focused }) => focused ?
-            (<Ionicons name="person-circle-outline" size={24} color="#FB8916" />) : (<Ionicons name="person-circle-outline" size={24} color="gray" />)
+            (<Ionicons name="person-circle-outline" size={24} color="#1A9BD8" />) : (<Ionicons name="person-circle-outline" size={24} color="gray" />)
         }} />
         {isUserLoggedIn && (
           <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ tabBarButton: () => null, tabBarStyle: { display: "none" } }} />

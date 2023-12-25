@@ -78,7 +78,7 @@ const LoginScreen = ({ navigation }) => {
           source={require("../assets/img/logo.png")}
         />
       </View>
-      <KeyboardAvoidingView style={{ marginTop: 20 }}>
+      <KeyboardAvoidingView style={{ marginTop: 5 }}>
         <View style={{ alignItems: "center", justifyContent: "center", }}>
           <Text style={{ fontSize: 32, marginTop: 25, fontFamily: "Ostrich" }}>Connectez-vous</Text>
         </View>

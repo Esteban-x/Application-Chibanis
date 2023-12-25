@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { useEffect, useContext, useCallback } from 'react'
 import { UserType } from '../UserContext'
 import base64 from 'react-native-base64'
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
+import * as Font from 'expo-font'
+import { Ionicons } from '@expo/vector-icons'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation }) => {
   const { userId, setUserId, userRole, setUserRole } = useContext(UserType)
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const [user, setUser] = useState("")
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false)
 
   useEffect(() => {
 

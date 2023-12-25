@@ -47,8 +47,8 @@ const RegisterScreen = () => {
         'Mulish-Bold': require('../assets/fonts/Mulish-Bold.ttf'),
         'Ostrich': require('../assets/fonts/OstrichSans-Heavy.otf'),
         'Neucha': require('../assets/fonts/Neucha-Regular.ttf'),
-      });
-      setFontsLoaded(true);
+      })
+      setFontsLoaded(true)
     }
 
     loadFonts();
@@ -186,7 +186,7 @@ const RegisterScreen = () => {
         />
         <KeyboardAvoidingView>
           <View style={{ alignItems: "center", justifyContent: "center", }}>
-            <Text style={{ fontSize: 32, fontFamily: "Ostrich", marginTop: 25 }}>Inscrivez-vous</Text>
+            <Text style={{ fontSize: 32, fontFamily: "Ostrich", marginTop: 5 }}>Inscrivez-vous</Text>
           </View>
           <View style={{ marginTop: 30 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, borderColor: "#D0D0D0", borderWidth: 1, paddingVertical: 5, borderRadius: 5 }}>
