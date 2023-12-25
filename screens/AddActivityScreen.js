@@ -48,7 +48,7 @@ const AddActivityScreen = ({ navigation }) => {
         <View style={styles.container}>
             <View style={{ alignItems: "center", marginTop: 30 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", }}>
-                    <AntDesign name="addfile" size={84} color="#1A9BD8" />
+                    <AntDesign name="addfile" size={70} color="#1A9BD8" />
                     <Text style={{ fontSize: 50, marginTop: 25 }}>Activité</Text>
                 </View>
             </View>

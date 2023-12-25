@@ -16,7 +16,7 @@ const ActivityScreen = ({ navigation, route }) => {
   const [activityId, setActivityId] = useState("")
   const { isUserLoggedIn, checkLoginStatus } = useContext(AuthContext)
   const navigations = useNavigation()
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false)
 
   useEffect(() => {
     checkLoginStatus()
