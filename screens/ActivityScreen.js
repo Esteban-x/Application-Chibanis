@@ -196,12 +196,12 @@ export default ActivityScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   activityCard: {
     margin: 10,
     padding: 10,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: 'white',
     borderRadius: 10,
   },
   title: {

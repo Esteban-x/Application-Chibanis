@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: '#EAF6FE',
+    backgroundColor: '',
     padding: 20,
   },
   card: {
